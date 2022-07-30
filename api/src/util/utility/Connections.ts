@@ -57,6 +57,8 @@ export interface GithubConnectionUserInfo {
 	};
 }
 
+// TODO: maybe make this more class-based?
+// TODO: should probably have some checks if client id and/or client secret are missing while connection is enabled.
 export const Connections: {
 	init: () => void;
 	github: {
@@ -95,6 +97,7 @@ export const Connections: {
 
 			const url = new URL(this.options.authorizeUrl);
 			url.searchParams.append("client_id", this.options.clientId!);
+			// TODO: probably shouldn't rely on cdn as this could be different from what we actually want. we should have an api endpoint setting.
 			url.searchParams.append("redirect_uri", `${Config.get().cdn.endpointPrivate}/connections/github/callback`);
 			url.searchParams.append("scope", "read:user");
 			url.searchParams.append("state", state);
