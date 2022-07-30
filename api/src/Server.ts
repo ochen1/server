@@ -11,6 +11,7 @@ import { initTranslation } from "./middlewares/Translation";
 import morgan from "morgan";
 import { initInstance } from "./util/handlers/Instance";
 import { red } from "picocolors"
+import { Connections } from "./util";
 
 export interface FosscordServerOptions extends ServerOptions {}
 
@@ -36,6 +37,7 @@ export class FosscordServer extends Server {
 		await Config.init();
 		await initEvent();
 		await initInstance();
+		await Connections.init();
 
 		let logRequests = process.env["LOG_REQUESTS"] != undefined;
 		if (logRequests) {

@@ -39,4 +39,7 @@ export class ConnectedAccount extends BaseClass {
 
 	@Column({ select: false })
 	visibility: number;
+
+	@Column({ type: "simple-array" })
+	integrations: string[];
 }

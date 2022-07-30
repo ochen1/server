@@ -3,6 +3,7 @@ export * from "./handlers/Message";
 export * from "./handlers/route";
 export * from "./handlers/Voice";
 export * from "./utility/Base64";
+export * from "./utility/Connections";
 export * from "./utility/ipAddress";
 export * from "./utility/passwordStrength";
 export * from "./utility/RandomInviteID";

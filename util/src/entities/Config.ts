@@ -206,6 +206,13 @@ export interface ConfigValue {
 		endpoint: string;
 		traceSampleRate: number;
 		environment: string;
+	},
+	connections: {
+		github: {
+			enabled: boolean;
+			clientId: string | null;
+			clientSecret: string | null;
+		}
 	}
 }
 
@@ -411,5 +418,12 @@ export const DefaultConfigOptions: ConfigValue = {
 		endpoint: "https://05e8e3d005f34b7d97e920ae5870a5e5@sentry.thearcanebrony.net/6",
 		traceSampleRate: 1.0,
 		environment: hostname()
+	},
+	connections: {
+		github: {
+			enabled: false,
+			clientId: null,
+			clientSecret: null,
+		}
 	}
 };
