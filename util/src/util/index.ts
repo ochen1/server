@@ -7,7 +7,6 @@ export * from "./imports/OrmUtils";
 export * from "./cdn";
 export * from "./Config";
 export * from "./Constants";
-export * from "./Connections";
 export * from "./Database";
 export * from "./Email";
 export * from "./Event";
