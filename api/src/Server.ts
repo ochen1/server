@@ -37,7 +37,7 @@ export class FosscordServer extends Server {
 		await Config.init();
 		await initEvent();
 		await initInstance();
-		await Connections.init();
+		Connections.init();
 
 		let logRequests = process.env["LOG_REQUESTS"] != undefined;
 		if (logRequests) {
