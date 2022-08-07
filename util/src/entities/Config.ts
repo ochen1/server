@@ -39,6 +39,12 @@ export interface KafkaBroker {
 	port: number;
 }
 
+export interface Connection {
+	enabled: boolean;
+	clientId: string | null;
+	clientSecret: string | null;
+}
+
 export interface ConfigValue {
 	gateway: {
 		endpointClient: string | null;
@@ -208,11 +214,8 @@ export interface ConfigValue {
 		environment: string;
 	},
 	connections: {
-		github: {
-			enabled: boolean;
-			clientId: string | null;
-			clientSecret: string | null;
-		}
+		github: Connection,
+		reddit: Connection
 	}
 }
 
@@ -424,6 +427,11 @@ export const DefaultConfigOptions: ConfigValue = {
 			enabled: false,
 			clientId: null,
 			clientSecret: null,
+		},
+		reddit: {
+			enabled: false,
+			clientId: null,
+			clientSecret: null
 		}
 	}
 };

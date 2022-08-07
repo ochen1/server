@@ -1,11 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToOne, RelationId } from "typeorm";
-import { BaseClass } from "./BaseClass";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, RelationId } from "typeorm";
+import { BaseClass, BaseClassWithoutId } from "./BaseClass";
 import { User } from "./User";
 
 export interface PublicConnectedAccount extends Pick<ConnectedAccount, "name" | "type" | "verified"> {}
 
 @Entity("connected_accounts")
-export class ConnectedAccount extends BaseClass {
+export class ConnectedAccount extends BaseClassWithoutId {
+	@PrimaryColumn()
+	id: string;
+
 	@Column({ nullable: true })
 	@RelationId((account: ConnectedAccount) => account.user)
 	user_id: string;

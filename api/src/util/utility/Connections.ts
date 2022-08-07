@@ -1,3 +1,4 @@
+import { RedditConnection } from "../../connections/RedditConnection";
 import { BaseConnection } from "../../connections/BaseConnection";
 import { GitHubConnection } from "../../connections/GitHubConnection";
 
@@ -13,7 +14,8 @@ export const Connections: {
 	init: () => void;
 } = {
 	connections: {
-		github: new GitHubConnection()
+		github: new GitHubConnection(),
+		reddit: new RedditConnection()
 	},
 	init: () => {
 		for (const connection of Object.values(Connections.connections)) {
