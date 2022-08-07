@@ -57,22 +57,14 @@ export interface GitHubConnectionTokenResponse {
 }
 
 export class GitHubConnection extends BaseConnection {
-	init() {
-		const config = Config.get().connections.github;
-		if (!config.clientId || !config.clientSecret) {
-			console.debug("GitHub connection is not configured and will not be available.");
-			return;
-		}
-
-		this.options = {
+	constructor() {
+		super({
 			name: "github",
 			authorizeUrl: "https://github.com/login/oauth/authorize",
 			tokenUrl: "https://github.com/login/oauth/access_token",
 			userInfoUrl: "https://api.github.com/user",
-			clientId: config.clientId,
-			clientSecret: config.clientSecret,
 			scopes: ["read:user"]
-		};
+		});
 	}
 
 	makeAuthorizeUrl(): string {
@@ -80,7 +72,7 @@ export class GitHubConnection extends BaseConnection {
 
 		const url = new URL(this.options.authorizeUrl);
 
-		url.searchParams.append("client_id", this.options.clientId!);
+		url.searchParams.append("client_id", this.clientId!);
 		// TODO: probably shouldn't rely on cdn as this could be different from what we actually want. we should have an api endpoint setting.
 		url.searchParams.append("redirect_uri", `${Config.get().cdn.endpointPrivate}/connections/${this.options.name}/callback`);
 		url.searchParams.append("scope", this.options.scopes.join(" "));
@@ -90,8 +82,8 @@ export class GitHubConnection extends BaseConnection {
 
 	makeTokenUrl(code: string): string {
 		const url = new URL(this.options.tokenUrl);
-		url.searchParams.append("client_id", this.options.clientId);
-		url.searchParams.append("client_secret", this.options.clientSecret);
+		url.searchParams.append("client_id", this.clientId);
+		url.searchParams.append("client_secret", this.clientSecret);
 		url.searchParams.append("code", code);
 
 		return url.toString();

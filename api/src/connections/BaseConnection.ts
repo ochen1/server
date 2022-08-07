@@ -6,8 +6,6 @@ export interface ConnectionOptions {
 	authorizeUrl: string;
 	tokenUrl: string;
 	userInfoUrl: string;
-	clientId: string;
-	clientSecret: string;
 	scopes: string[];
 }
 
@@ -19,9 +17,21 @@ export interface ConnectionConfigValue {
 
 export abstract class BaseConnection {
 	public options: ConnectionOptions;
+	public enabled: boolean = false;
+	public clientId: string;
+	public clientSecret: string;
 	public readonly states: string[] = [];
 
-	abstract init(): void;
+	constructor(options: ConnectionOptions) {
+		this.options = options;
+	}
+
+	init(): void {
+		const config = (Config.get().connections as { [key: string]: ConnectionConfigValue })[this.options.name];
+		this.enabled = config.enabled;
+		this.clientId = config.clientId;
+		this.clientSecret = config.clientSecret;
+	}
 
 	createState(): string {
 		const state = crypto.randomBytes(16).toString("hex");
@@ -34,9 +44,9 @@ export abstract class BaseConnection {
 		if (!this.states.includes(state)) throw DiscordApiErrors.INVALID_OAUTH_STATE;
 	}
 
-	get enabled(): boolean {
-		const config = (Config.get().connections as { [key: string]: ConnectionConfigValue })[this.options.name];
-		return !!(this.options.clientId && this.options.clientSecret && config.enabled);
+	isEnabled(): boolean {
+		console.log(this.clientId, this.clientSecret, this.enabled);
+		return !!(this.clientId && this.clientSecret && this.enabled);
 	}
 
 	abstract makeAuthorizeUrl(): string;

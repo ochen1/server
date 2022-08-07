@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { ConnectionAuthCallbackSchema, Connections, route } from "@fosscord/api";
 import { HTTPError } from "lambert-server";
-import { emitEvent } from "@fosscord/util";
+import { emitEvent, UserConnectionsUpdateEvent } from "@fosscord/util";
 import { BaseConnection } from "../../../connections/BaseConnection";
 
 const router = Router();
@@ -19,10 +19,13 @@ router.post("/", route({ body: "ConnectionAuthCallbackSchema" }), async (req: Re
 	const connectedAccount = connection.createConnection(req.user_id, token, body.friend_sync, userInfo);
 	await connectedAccount.save();
 
-	await emitEvent({
+	const d = {
 		event: "USER_CONNECTIONS_UPDATE",
-		user_id: req.user_id
-	});
+		user_id: req.user_id,
+		data: {}
+	} as UserConnectionsUpdateEvent;
+	console.log(d);
+	await emitEvent(d);
 
 	res.sendStatus(204);
 });
