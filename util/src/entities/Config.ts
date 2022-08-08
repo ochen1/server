@@ -214,9 +214,10 @@ export interface ConfigValue {
 		environment: string;
 	},
 	connections: {
-		github: Connection,
-		reddit: Connection,
-		epicgames: Connection
+		github: Connection;
+		reddit: Connection;
+		epicgames: Connection;
+		youtube: Connection;
 	}
 }
 
@@ -435,6 +436,11 @@ export const DefaultConfigOptions: ConfigValue = {
 			clientSecret: null
 		},
 		epicgames: {
+			enabled: false,
+			clientId: null,
+			clientSecret: null
+		},
+		youtube: {
 			enabled: false,
 			clientId: null,
 			clientSecret: null

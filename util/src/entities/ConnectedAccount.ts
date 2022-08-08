@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, RelationId } from "typeorm";
-import { BaseClass, BaseClassWithoutId } from "./BaseClass";
+import { BaseClassWithoutId } from "./BaseClass";
 import { User } from "./User";
 
 export interface PublicConnectedAccount extends Pick<ConnectedAccount, "name" | "type" | "verified"> {}
