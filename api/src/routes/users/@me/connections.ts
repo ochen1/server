@@ -8,7 +8,7 @@ router.get("/", route({}), async (req: Request, res: Response) => {
 		where: {
 			user_id: req.user_id
 		},
-		select: ["type", "name", "verified", "visibility", "show_activity", "revoked", "access_token", "friend_sync", "integrations"]
+		select: ["id", "type", "name", "verified", "visibility", "show_activity", "revoked", "access_token", "friend_sync", "integrations"]
 	});
 
 	res.json(connections);
