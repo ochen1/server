@@ -24,7 +24,6 @@ router.post("/", route({ body: "ConnectionAuthCallbackSchema" }), async (req: Re
 		user_id: req.user_id,
 		data: {}
 	} as UserConnectionsUpdateEvent;
-	console.log(d);
 	await emitEvent(d);
 
 	res.sendStatus(204);
