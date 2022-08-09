@@ -91,7 +91,7 @@ export class TwitchConnection extends BaseConnection {
 	createConnection(userId: string, token: string, friend_sync: boolean, userInfo: TwitchConnectionUserResponse): ConnectedAccount {
 		return new ConnectedAccount({
 			user_id: userId,
-			id: userInfo.data[0].id,
+			external_id: userInfo.data[0].id,
 			access_token: token,
 			friend_sync: friend_sync,
 			name: userInfo.data[0].display_name,

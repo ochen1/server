@@ -114,7 +114,7 @@ export class GitHubConnection extends BaseConnection {
 	createConnection(userId: string, token: string, friend_sync: boolean, userInfo: GitHubConnectionUser): ConnectedAccount {
 		return new ConnectedAccount({
 			user_id: userId,
-			id: userInfo.id,
+			external_id: userInfo.id,
 			access_token: token,
 			friend_sync: friend_sync,
 			name: userInfo.name,

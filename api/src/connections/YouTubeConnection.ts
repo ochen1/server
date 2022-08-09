@@ -97,7 +97,7 @@ export class YouTubeConnection extends BaseConnection {
 	): ConnectedAccount {
 		return new ConnectedAccount({
 			user_id: userId,
-			id: channelInfo.items[0].id,
+			external_id: channelInfo.items[0].id,
 			access_token: token,
 			friend_sync: friend_sync,
 			name: channelInfo.items[0].snippet.title,
