@@ -12,7 +12,7 @@ import { Interaction } from "./Interaction";
 import { ConnectedAccount } from "../entities/ConnectedAccount";
 import { Relationship, RelationshipType } from "../entities/Relationship";
 import { Presence } from "./Presence";
-import { Sticker } from "..";
+import { ConnectedAccountDTO, Sticker } from "..";
 import { Activity, Status } from ".";
 
 export interface Event {
@@ -57,7 +57,7 @@ export interface ReadyEventData {
 	session_id: string; // resuming
 	guilds: Guild[];
 	analytics_token?: string;
-	connected_accounts?: ConnectedAccount[];
+	connected_accounts?: ConnectedAccountDTO[];
 	consents?: {
 		personalization?: {
 			consented?: boolean;

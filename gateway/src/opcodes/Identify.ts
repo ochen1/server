@@ -18,6 +18,8 @@ import {
 	PrivateSessionProjection,
 	MemberPrivateProjection,
 	PresenceUpdateEvent,
+	ConnectedAccount,
+	ConnectedAccountDTO,
 } from "@fosscord/util";
 import { Send } from "../util/Send";
 import { CLOSECODES, OPCODES } from "../util/Constants";
@@ -51,8 +53,8 @@ export async function onIdentify(this: WebSocket, data: Payload) {
 
 	const session_id = genSessionId();
 	this.session_id = session_id; //Set the session of the WebSocket object
-	
-	const [user, read_states, members, recipients, session, application] =
+
+	const [user, read_states, members, recipients, connected_accounts, session, application] =
 		await Promise.all([
 			User.findOneOrFail({
 				where: { id: this.user_id },
@@ -82,6 +84,23 @@ export async function onIdentify(this: WebSocket, data: Payload) {
 					"channel.recipients.user",
 				],
 				// TODO: public user selection
+			}),
+			ConnectedAccount.find({
+				where: {
+					user_id: this.user_id
+				},
+				select: [
+					"external_id",
+					"type",
+					"name",
+					"verified",
+					"visibility",
+					"show_activity",
+					"revoked",
+					"access_token",
+					"friend_sync",
+					"integrations"
+				]
 			}),
 			// save the session and delete it when the websocket is closed
 			await OrmUtils.mergeDeep(new Session(), {
@@ -259,7 +278,7 @@ export async function onIdentify(this: WebSocket, data: Payload) {
 		private_channels: channels,
 		session_id: session_id,
 		analytics_token: "", // TODO
-		connected_accounts: [], // TODO
+		connected_accounts: connected_accounts.map((x) => new ConnectedAccountDTO(x)),
 		consents: {
 			personalization: {
 				consented: false, // TODO
