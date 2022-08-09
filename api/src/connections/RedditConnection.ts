@@ -129,7 +129,7 @@ export class RedditConnection extends BaseConnection {
 				return res.access_token;
 			})
 			.catch((e) => {
-				console.error(`Error exchanging token for Reddit connection: ${e}`);
+				console.error(`Error exchanging token for ${this.options.name} connection: ${e}`);
 				throw DiscordApiErrors.INVALID_OAUTH_TOKEN;
 			});
 	}

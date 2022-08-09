@@ -97,7 +97,7 @@ export class GitHubConnection extends BaseConnection {
 			.then((res) => res.json())
 			.then((res: OAuthTokenResponse) => res.access_token)
 			.catch((e) => {
-				console.error(`Error exchanging token for GitHub connection: ${e}`);
+				console.error(`Error exchanging token for ${this.options.name} connection: ${e}`);
 				throw DiscordApiErrors.INVALID_OAUTH_TOKEN;
 			});
 	}

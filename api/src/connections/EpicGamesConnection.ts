@@ -74,7 +74,7 @@ export class EpicGamesConnection extends BaseConnection {
 				return res.access_token;
 			})
 			.catch((e) => {
-				console.error(`Error exchanging token for EpicGames connection: ${e}`);
+				console.error(`Error exchanging token for ${this.options.name} connection: ${e}`);
 				throw DiscordApiErrors.INVALID_OAUTH_TOKEN;
 			});
 	}
