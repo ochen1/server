@@ -3,20 +3,18 @@ import fetch from "node-fetch";
 import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
 
 export interface TwitchConnectionUserResponse {
-	data: [
-		{
-			id: string;
-			login: string;
-			display_name: string;
-			type: string;
-			broadcaster_type: string;
-			description: string;
-			profile_image_url: string;
-			offline_image_url: string;
-			view_count: number;
-			created_at: string;
-		}
-	];
+	data: {
+		id: string;
+		login: string;
+		display_name: string;
+		type: string;
+		broadcaster_type: string;
+		description: string;
+		profile_image_url: string;
+		offline_image_url: string;
+		view_count: number;
+		created_at: string;
+	}[];
 }
 
 export class TwitchConnection extends BaseConnection {
