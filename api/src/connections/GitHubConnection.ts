@@ -53,7 +53,7 @@ export interface GitHubConnectionUser {
 export class GitHubConnection extends BaseConnection {
 	constructor() {
 		super({
-			name: "github",
+			id: "github",
 			authorizeUrl: "https://github.com/login/oauth/authorize",
 			tokenUrl: "https://github.com/login/oauth/access_token",
 			userInfoUrl: "https://api.github.com/user",
@@ -67,7 +67,7 @@ export class GitHubConnection extends BaseConnection {
 
 		url.searchParams.append("client_id", this.clientId!);
 		// TODO: probably shouldn't rely on cdn as this could be different from what we actually want. we should have an api endpoint setting.
-		url.searchParams.append("redirect_uri", `${Config.get().cdn.endpointPrivate}/connections/${this.options.name}/callback`);
+		url.searchParams.append("redirect_uri", `${Config.get().cdn.endpointPrivate}/connections/${this.options.id}/callback`);
 		url.searchParams.append("scope", this.options.scopes.join(" "));
 		url.searchParams.append("state", state);
 		return url.toString();
@@ -96,7 +96,7 @@ export class GitHubConnection extends BaseConnection {
 			.then((res) => res.json())
 			.then((res: OAuthTokenResponse) => res.access_token)
 			.catch((e) => {
-				console.error(`Error exchanging token for ${this.options.name} connection: ${e}`);
+				console.error(`Error exchanging token for ${this.options.id} connection: ${e}`);
 				throw DiscordApiErrors.INVALID_OAUTH_TOKEN;
 			});
 	}
@@ -120,7 +120,7 @@ export class GitHubConnection extends BaseConnection {
 			name: userInfo.name,
 			revoked: false,
 			show_activity: false,
-			type: this.options.name,
+			type: this.options.id,
 			verified: true,
 			visibility: 0,
 			integrations: []

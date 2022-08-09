@@ -76,7 +76,7 @@ export interface RedditConnectionErrorResponse {
 export class RedditConnection extends BaseConnection {
 	constructor() {
 		super({
-			name: "reddit",
+			id: "reddit",
 			authorizeUrl: "https://www.reddit.com/api/v1/authorize",
 			tokenUrl: "https://www.reddit.com/api/v1/access_token",
 			userInfoUrl: "https://oauth.reddit.com/api/v1/me",
@@ -90,7 +90,7 @@ export class RedditConnection extends BaseConnection {
 
 		url.searchParams.append("client_id", this.clientId!);
 		// TODO: probably shouldn't rely on cdn as this could be different from what we actually want. we should have an api endpoint setting.
-		url.searchParams.append("redirect_uri", `${Config.get().cdn.endpointPrivate}/connections/${this.options.name}/callback`);
+		url.searchParams.append("redirect_uri", `${Config.get().cdn.endpointPrivate}/connections/${this.options.id}/callback`);
 		url.searchParams.append("response_type", "code");
 		url.searchParams.append("scope", this.options.scopes.join(" "));
 		url.searchParams.append("state", state);
@@ -116,7 +116,7 @@ export class RedditConnection extends BaseConnection {
 			body: new URLSearchParams({
 				grant_type: "authorization_code",
 				code: code,
-				redirect_uri: `${Config.get().cdn.endpointPrivate}/connections/${this.options.name}/callback`
+				redirect_uri: `${Config.get().cdn.endpointPrivate}/connections/${this.options.id}/callback`
 			})
 		})
 			.then((res) => res.json())
@@ -125,7 +125,7 @@ export class RedditConnection extends BaseConnection {
 				return res.access_token;
 			})
 			.catch((e) => {
-				console.error(`Error exchanging token for ${this.options.name} connection: ${e}`);
+				console.error(`Error exchanging token for ${this.options.id} connection: ${e}`);
 				throw DiscordApiErrors.INVALID_OAUTH_TOKEN;
 			});
 	}
@@ -149,7 +149,7 @@ export class RedditConnection extends BaseConnection {
 			name: userInfo.name,
 			revoked: false,
 			show_activity: false,
-			type: this.options.name,
+			type: this.options.id,
 			verified: userInfo.has_verified_email,
 			visibility: 0,
 			integrations: []

@@ -27,7 +27,7 @@ export interface YouTubeConnectionChannelListResult {
 export class YouTubeConnection extends BaseConnection {
 	constructor() {
 		super({
-			name: "youtube",
+			id: "youtube",
 			authorizeUrl: "https://accounts.google.com/o/oauth2/v2/auth",
 			tokenUrl: "https://oauth2.googleapis.com/token",
 			userInfoUrl: "https://www.googleapis.com/youtube/v3/channels?mine=true&part=snippet",
@@ -41,7 +41,7 @@ export class YouTubeConnection extends BaseConnection {
 
 		url.searchParams.append("client_id", this.clientId!);
 		// TODO: probably shouldn't rely on cdn as this could be different from what we actually want. we should have an api endpoint setting.
-		url.searchParams.append("redirect_uri", `${Config.get().cdn.endpointPrivate}/connections/${this.options.name}/callback`);
+		url.searchParams.append("redirect_uri", `${Config.get().cdn.endpointPrivate}/connections/${this.options.id}/callback`);
 		url.searchParams.append("response_type", "code");
 		url.searchParams.append("scope", this.options.scopes.join(" "));
 		url.searchParams.append("state", state);
@@ -68,13 +68,13 @@ export class YouTubeConnection extends BaseConnection {
 				code: code,
 				client_id: this.clientId,
 				client_secret: this.clientSecret,
-				redirect_uri: `${Config.get().cdn.endpointPrivate}/connections/${this.options.name}/callback`
+				redirect_uri: `${Config.get().cdn.endpointPrivate}/connections/${this.options.id}/callback`
 			})
 		})
 			.then((res) => res.json())
 			.then((res: OAuthTokenResponse) => res.access_token)
 			.catch((e) => {
-				console.error(`Error exchanging token for ${this.options.name} connection: ${e}`);
+				console.error(`Error exchanging token for ${this.options.id} connection: ${e}`);
 				throw DiscordApiErrors.INVALID_OAUTH_TOKEN;
 			});
 	}
@@ -103,7 +103,7 @@ export class YouTubeConnection extends BaseConnection {
 			name: channelInfo.items[0].snippet.title,
 			revoked: false,
 			show_activity: false,
-			type: this.options.name,
+			type: this.options.id,
 			verified: true,
 			visibility: 0,
 			integrations: []

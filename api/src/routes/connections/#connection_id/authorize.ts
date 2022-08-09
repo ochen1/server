@@ -6,8 +6,8 @@ import { BaseConnection } from "../../../connections/BaseConnection";
 const router = Router();
 
 router.get("/", route({}), async (req: Request, res: Response) => {
-	const { connection_name } = req.params;
-	const connection: BaseConnection = Connections.connections[connection_name];
+	const { connection_id } = req.params;
+	const connection: BaseConnection = Connections.connections[connection_id];
 	if (!connection) throw new HTTPError("Unknown connection", 400);
 	if (!connection.enabled) throw new HTTPError("Connection is not available", 400);
 

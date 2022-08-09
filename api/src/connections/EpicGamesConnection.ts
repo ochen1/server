@@ -26,7 +26,7 @@ export interface EpicGamesConnectionTokenResponse extends OAuthTokenResponse {
 export class EpicGamesConnection extends BaseConnection {
 	constructor() {
 		super({
-			name: "epicgames",
+			id: "epicgames",
 			authorizeUrl: "https://www.epicgames.com/id/authorize",
 			tokenUrl: "https://api.epicgames.dev/epic/oauth/v1/token",
 			userInfoUrl: "https://api.epicgames.dev/epic/id/v1/accounts",
@@ -40,7 +40,7 @@ export class EpicGamesConnection extends BaseConnection {
 
 		url.searchParams.append("client_id", this.clientId!);
 		// TODO: probably shouldn't rely on cdn as this could be different from what we actually want. we should have an api endpoint setting.
-		url.searchParams.append("redirect_uri", `${Config.get().cdn.endpointPrivate}/connections/${this.options.name}/callback`);
+		url.searchParams.append("redirect_uri", `${Config.get().cdn.endpointPrivate}/connections/${this.options.id}/callback`);
 		url.searchParams.append("response_type", "code");
 		url.searchParams.append("scope", this.options.scopes.join(" "));
 		url.searchParams.append("state", state);
@@ -71,7 +71,7 @@ export class EpicGamesConnection extends BaseConnection {
 			.then((res) => res.json())
 			.then((res: EpicGamesConnectionTokenResponse) => res.access_token)
 			.catch((e) => {
-				console.error(`Error exchanging token for ${this.options.name} connection: ${e}`);
+				console.error(`Error exchanging token for ${this.options.id} connection: ${e}`);
 				throw DiscordApiErrors.INVALID_OAUTH_TOKEN;
 			});
 	}
@@ -95,7 +95,7 @@ export class EpicGamesConnection extends BaseConnection {
 			name: userInfo.displayName,
 			revoked: false,
 			show_activity: false,
-			type: this.options.name,
+			type: this.options.id,
 			verified: true,
 			visibility: 0,
 			integrations: []

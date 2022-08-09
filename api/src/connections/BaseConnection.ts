@@ -2,7 +2,7 @@ import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import crypto from "crypto";
 
 export interface ConnectionOptions {
-	name: string;
+	id: string;
 	authorizeUrl: string;
 	tokenUrl: string;
 	userInfoUrl: string;
@@ -35,7 +35,7 @@ export abstract class BaseConnection {
 	}
 
 	init(): void {
-		const config = (Config.get().connections as { [key: string]: ConnectionConfigValue })[this.options.name];
+		const config = (Config.get().connections as { [key: string]: ConnectionConfigValue })[this.options.id];
 		this.enabled = config.enabled;
 		this.clientId = config.clientId;
 		this.clientSecret = config.clientSecret;
