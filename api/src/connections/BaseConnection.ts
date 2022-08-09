@@ -15,6 +15,14 @@ export interface ConnectionConfigValue {
 	clientSecret: string;
 }
 
+export interface OAuthTokenResponse {
+	access_token: string;
+	token_type: string;
+	scope: string;
+	refresh_token?: string;
+	expires_in?: number;
+}
+
 export abstract class BaseConnection {
 	public options: ConnectionOptions;
 	public enabled: boolean = false;

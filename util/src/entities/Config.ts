@@ -218,6 +218,7 @@ export interface ConfigValue {
 		reddit: Connection;
 		epicgames: Connection;
 		youtube: Connection;
+		twitch: Connection;
 	}
 }
 
@@ -441,6 +442,11 @@ export const DefaultConfigOptions: ConfigValue = {
 			clientSecret: null
 		},
 		youtube: {
+			enabled: false,
+			clientId: null,
+			clientSecret: null
+		},
+		twitch: {
 			enabled: false,
 			clientId: null,
 			clientSecret: null

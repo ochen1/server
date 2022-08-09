@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection } from "./BaseConnection";
+import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
 
 export interface EpicGamesConnectionUserLinkedAccount {
 	identityProviderId: string;
@@ -14,12 +14,7 @@ export interface EpicGamesConnectionUser {
 	linkedAccounts: EpicGamesConnectionUserLinkedAccount[];
 }
 
-export interface EpicGamesConnectionTokenResponse {
-	access_token: string;
-	token_type: string;
-	scope: string;
-	refresh_token: string;
-	expires_in: number;
+export interface EpicGamesConnectionTokenResponse extends OAuthTokenResponse {
 	expires_at: string;
 	refresh_expires_in: number;
 	refresh_expires_at: string;

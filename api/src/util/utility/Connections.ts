@@ -1,4 +1,11 @@
-import { BaseConnection, EpicGamesConnection, GitHubConnection, RedditConnection, YouTubeConnection } from "../../connections";
+import {
+	BaseConnection,
+	EpicGamesConnection,
+	GitHubConnection,
+	RedditConnection,
+	TwitchConnection,
+	YouTubeConnection
+} from "../../connections";
 
 export interface ConnectionAuthCallbackSchema {
 	code: string;
@@ -15,7 +22,8 @@ export const Connections: {
 		github: new GitHubConnection(),
 		reddit: new RedditConnection(),
 		epicgames: new EpicGamesConnection(),
-		youtube: new YouTubeConnection()
+		youtube: new YouTubeConnection(),
+		twitch: new TwitchConnection()
 	},
 	init: () => {
 		for (const connection of Object.values(Connections.connections)) {

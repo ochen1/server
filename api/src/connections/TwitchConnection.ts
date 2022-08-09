@@ -2,36 +2,31 @@ import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
 import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
 
-export interface YouTubeConnectionChannelListResult {
-	items: {
-		snippet: {
-			// thumbnails: Thumbnails;
-			title: string;
-			country: string;
-			publishedAt: string;
-			// localized: Localized;
+export interface TwitchConnectionUserResponse {
+	data: [
+		{
+			id: string;
+			login: string;
+			display_name: string;
+			type: string;
+			broadcaster_type: string;
 			description: string;
-		};
-		kind: string;
-		etag: string;
-		id: string;
-	}[];
-	kind: string;
-	etag: string;
-	pageInfo: {
-		resultsPerPage: number;
-		totalResults: number;
-	};
+			profile_image_url: string;
+			offline_image_url: string;
+			view_count: number;
+			created_at: string;
+		}
+	];
 }
 
-export class YouTubeConnection extends BaseConnection {
+export class TwitchConnection extends BaseConnection {
 	constructor() {
 		super({
-			name: "youtube",
-			authorizeUrl: "https://accounts.google.com/o/oauth2/v2/auth",
-			tokenUrl: "https://oauth2.googleapis.com/token",
-			userInfoUrl: "https://www.googleapis.com/youtube/v3/channels?mine=true&part=snippet",
-			scopes: ["https://www.googleapis.com/auth/youtube.readonly"]
+			name: "twitch",
+			authorizeUrl: "https://id.twitch.tv/oauth2/authorize",
+			tokenUrl: "https://id.twitch.tv/oauth2/token",
+			userInfoUrl: "https://api.twitch.tv/helix/users",
+			scopes: []
 		});
 	}
 
@@ -82,28 +77,32 @@ export class YouTubeConnection extends BaseConnection {
 			});
 	}
 
-	async getUser(token: string): Promise<YouTubeConnectionChannelListResult> {
+	async getUser(token: string): Promise<TwitchConnectionUserResponse> {
 		const url = new URL(this.options.userInfoUrl);
 		return fetch(url.toString(), {
 			method: "GET",
 			headers: {
-				Authorization: `Bearer ${token}`
+				Authorization: `Bearer ${token}`,
+				"Client-Id": this.clientId
 			}
-		}).then((res) => res.json());
+		})
+			.then((res) => res.json())
+			.then((res) => {
+				if (res.error) {
+					throw new Error(`[${res.status}] ${res.error}: ${res.message}`);
+				}
+
+				return res;
+			});
 	}
 
-	createConnection(
-		userId: string,
-		token: string,
-		friend_sync: boolean,
-		channelInfo: YouTubeConnectionChannelListResult
-	): ConnectedAccount {
+	createConnection(userId: string, token: string, friend_sync: boolean, userInfo: TwitchConnectionUserResponse): ConnectedAccount {
 		return new ConnectedAccount({
 			user_id: userId,
-			id: channelInfo.items[0].id,
+			id: userInfo.data[0].id,
 			access_token: token,
 			friend_sync: friend_sync,
-			name: channelInfo.items[0].snippet.title,
+			name: userInfo.data[0].display_name,
 			revoked: false,
 			show_activity: false,
 			type: this.options.name,

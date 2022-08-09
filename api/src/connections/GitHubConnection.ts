@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection } from "./BaseConnection";
+import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
 
 // TODO: do we really need all this when we only use name?
 export interface GitHubConnectionUser {
@@ -50,12 +50,6 @@ export interface GitHubConnectionUser {
 	};
 }
 
-export interface GitHubConnectionTokenResponse {
-	access_token: string;
-	token_type: string;
-	scope: string;
-}
-
 export class GitHubConnection extends BaseConnection {
 	constructor() {
 		super({
@@ -101,7 +95,7 @@ export class GitHubConnection extends BaseConnection {
 			}
 		})
 			.then((res) => res.json())
-			.then((res: GitHubConnectionTokenResponse) => res.access_token)
+			.then((res: OAuthTokenResponse) => res.access_token)
 			.catch((e) => {
 				console.error(`Error exchanging token for GitHub connection: ${e}`);
 				throw DiscordApiErrors.INVALID_OAUTH_TOKEN;
