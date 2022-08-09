@@ -86,7 +86,6 @@ export class RedditConnection extends BaseConnection {
 
 	makeAuthorizeUrl(): string {
 		const state = this.createState();
-
 		const url = new URL(this.options.authorizeUrl);
 
 		url.searchParams.append("client_id", this.clientId!);
@@ -122,10 +121,7 @@ export class RedditConnection extends BaseConnection {
 		})
 			.then((res) => res.json())
 			.then((res: OAuthTokenResponse & RedditConnectionErrorResponse) => {
-				if (res.error) {
-					throw new Error(res.message);
-				}
-
+				if (res.error) throw new Error(res.message);
 				return res.access_token;
 			})
 			.catch((e) => {

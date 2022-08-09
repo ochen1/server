@@ -36,7 +36,6 @@ export class EpicGamesConnection extends BaseConnection {
 
 	makeAuthorizeUrl(): string {
 		const state = this.createState();
-
 		const url = new URL(this.options.authorizeUrl);
 
 		url.searchParams.append("client_id", this.clientId!);
@@ -70,9 +69,7 @@ export class EpicGamesConnection extends BaseConnection {
 			})
 		})
 			.then((res) => res.json())
-			.then((res: EpicGamesConnectionTokenResponse) => {
-				return res.access_token;
-			})
+			.then((res: EpicGamesConnectionTokenResponse) => res.access_token)
 			.catch((e) => {
 				console.error(`Error exchanging token for ${this.options.name} connection: ${e}`);
 				throw DiscordApiErrors.INVALID_OAUTH_TOKEN;

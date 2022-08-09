@@ -63,7 +63,6 @@ export class GitHubConnection extends BaseConnection {
 
 	makeAuthorizeUrl(): string {
 		const state = this.createState();
-
 		const url = new URL(this.options.authorizeUrl);
 
 		url.searchParams.append("client_id", this.clientId!);
