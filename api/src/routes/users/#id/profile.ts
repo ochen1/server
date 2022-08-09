@@ -37,7 +37,7 @@ router.get("/", route({ test: { response: { body: "UserProfileResponse" } } }), 
 		}
 	}
 	res.json({
-		connected_accounts: user.connected_accounts,
+		connected_accounts: user.connected_accounts.map((x) => ({ ...x, id: x.external_id, external_id: undefined })),
 		premium_guild_since: premium_guild_since, // TODO
 		premium_since: user.premium_since, // TODO
 		mutual_guilds: mutual_guilds, // TODO {id: "", nick: null} when ?with_mutual_guilds=true
