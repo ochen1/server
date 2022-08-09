@@ -1,13 +1,12 @@
 import { Router, Request, Response } from "express";
 import { Connections, route } from "@fosscord/api";
-import { BaseConnection } from "../../../connections/BaseConnection";
 import { FieldErrors } from "@fosscord/util";
 
 const router = Router();
 
 router.get("/", route({}), async (req: Request, res: Response) => {
 	const { connection_id } = req.params;
-	const connection: BaseConnection = Connections.connections[connection_id];
+	const connection = Connections.connections[connection_id];
 	if (!connection)
 		throw FieldErrors({
 			provider_id: {

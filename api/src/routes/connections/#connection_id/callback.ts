@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
 import { ConnectionAuthCallbackSchema, Connections, route } from "@fosscord/api";
 import { emitEvent, FieldErrors, UserConnectionsUpdateEvent } from "@fosscord/util";
-import { BaseConnection } from "../../../connections/BaseConnection";
 
 const router = Router();
 
@@ -9,7 +8,7 @@ router.post("/", route({ body: "ConnectionAuthCallbackSchema" }), async (req: Re
 	const body = req.body as ConnectionAuthCallbackSchema;
 
 	const { connection_id } = req.params;
-	const connection: BaseConnection = Connections.connections[connection_id];
+	const connection = Connections.connections[connection_id];
 	if (!connection)
 		throw FieldErrors({
 			provider_id: {
