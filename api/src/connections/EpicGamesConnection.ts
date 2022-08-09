@@ -86,11 +86,10 @@ export class EpicGamesConnection extends BaseConnection {
 		}).then((res) => res.json());
 	}
 
-	createConnection(userId: string, token: string, friend_sync: boolean, userInfo: EpicGamesConnectionUser): ConnectedAccount {
+	createConnection(userId: string, friend_sync: boolean, userInfo: EpicGamesConnectionUser): ConnectedAccount {
 		return new ConnectedAccount({
 			user_id: userId,
 			external_id: userInfo.accountId,
-			access_token: token,
 			friend_sync: friend_sync,
 			name: userInfo.displayName,
 			revoked: false,

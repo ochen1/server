@@ -27,7 +27,7 @@ router.post("/", route({ body: "ConnectionAuthCallbackSchema" }), async (req: Re
 
 	const token = await connection.exchangeCode(body.code, body.state);
 	const userInfo = await connection.getUser(token);
-	const connectedAccount = connection.createConnection(req.user_id, token, body.friend_sync, userInfo);
+	const connectedAccount = connection.createConnection(req.user_id, body.friend_sync, userInfo, token);
 	await connectedAccount.save();
 
 	const d = {

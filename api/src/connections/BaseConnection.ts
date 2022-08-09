@@ -65,5 +65,5 @@ export abstract class BaseConnection {
 
 	abstract getUser(token: string): Promise<unknown>;
 
-	abstract createConnection(userId: string, token: string, friend_sync: boolean, userInfo: unknown): ConnectedAccount;
+	abstract createConnection(userId: string, friend_sync: boolean, userInfo: unknown, token: string): ConnectedAccount;
 }

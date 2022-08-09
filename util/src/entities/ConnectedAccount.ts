@@ -19,8 +19,8 @@ export class ConnectedAccount extends BaseClass {
 	})
 	user: User;
 
-	@Column({ select: false })
-	access_token: string;
+	@Column({ select: false, nullable: true })
+	access_token?: string;
 
 	@Column({ select: false })
 	friend_sync: boolean;

@@ -111,11 +111,10 @@ export class GitHubConnection extends BaseConnection {
 		}).then((res) => res.json());
 	}
 
-	createConnection(userId: string, token: string, friend_sync: boolean, userInfo: GitHubConnectionUser): ConnectedAccount {
+	createConnection(userId: string, friend_sync: boolean, userInfo: GitHubConnectionUser): ConnectedAccount {
 		return new ConnectedAccount({
 			user_id: userId,
 			external_id: userInfo.id,
-			access_token: token,
 			friend_sync: friend_sync,
 			name: userInfo.name,
 			revoked: false,
