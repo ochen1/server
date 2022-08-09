@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { PublicConnectedAccount, PublicUser, User, UserPublic, Member } from "@fosscord/util";
+import { PublicConnectedAccount, PublicUser, User, UserPublic, Member, ConnectedAccountDTO } from "@fosscord/util";
 import { route } from "@fosscord/api";
 
 const router: Router = Router();
@@ -37,7 +37,7 @@ router.get("/", route({ test: { response: { body: "UserProfileResponse" } } }), 
 		}
 	}
 	res.json({
-		connected_accounts: user.connected_accounts.map((x) => ({ ...x, id: x.external_id, external_id: undefined })),
+		connected_accounts: user.connected_accounts.map((x) => new ConnectedAccountDTO(x)),
 		premium_guild_since: premium_guild_since, // TODO
 		premium_since: user.premium_since, // TODO
 		mutual_guilds: mutual_guilds, // TODO {id: "", nick: null} when ?with_mutual_guilds=true

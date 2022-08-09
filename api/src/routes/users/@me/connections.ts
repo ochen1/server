@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { route } from "@fosscord/api";
-import { ConnectedAccount } from "@fosscord/util";
+import { ConnectedAccount, ConnectedAccountDTO } from "@fosscord/util";
 const router: Router = Router();
 
 router.get("/", route({}), async (req: Request, res: Response) => {
@@ -22,7 +22,7 @@ router.get("/", route({}), async (req: Request, res: Response) => {
 		]
 	});
 
-	res.json(connections.map((x) => ({ ...x, id: x.external_id, external_id: undefined })));
+	res.json(connections.map((x) => new ConnectedAccountDTO(x, true)));
 });
 
 export default router;

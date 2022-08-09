@@ -278,7 +278,7 @@ export async function onIdentify(this: WebSocket, data: Payload) {
 		private_channels: channels,
 		session_id: session_id,
 		analytics_token: "", // TODO
-		connected_accounts: connected_accounts.map((x) => new ConnectedAccountDTO(x)),
+		connected_accounts: connected_accounts.map((x) => new ConnectedAccountDTO(x, true)),
 		consents: {
 			personalization: {
 				consented: false, // TODO

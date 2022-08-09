@@ -13,10 +13,10 @@ export class ConnectedAccountDTO {
 	visibility: number;
 	integrations: string[];
 
-	constructor(connectedAccount: ConnectedAccount) {
+	constructor(connectedAccount: ConnectedAccount, with_token: boolean = false) {
 		this.id = connectedAccount.external_id;
 		this.user_id = connectedAccount.user_id;
-		this.access_token = connectedAccount.access_token ?? undefined;
+		this.access_token = connectedAccount.access_token && with_token ? connectedAccount.access_token : undefined;
 		this.friend_sync = connectedAccount.friend_sync;
 		this.name = connectedAccount.name;
 		this.revoked = connectedAccount.revoked;
