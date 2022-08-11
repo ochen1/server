@@ -2,6 +2,7 @@ import {
 	BaseConnection,
 	BattleNetConnection,
 	EpicGamesConnection,
+	FacebookConnection,
 	GitHubConnection,
 	RedditConnection,
 	TwitchConnection,
@@ -25,7 +26,8 @@ export const Connections: {
 		epicgames: new EpicGamesConnection(),
 		youtube: new YouTubeConnection(),
 		twitch: new TwitchConnection(),
-		battlenet: new BattleNetConnection()
+		battlenet: new BattleNetConnection(),
+		facebook: new FacebookConnection()
 	},
 	init: () => {
 		for (const connection of Object.values(Connections.connections)) {

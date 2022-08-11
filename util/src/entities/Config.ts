@@ -220,6 +220,7 @@ export interface ConfigValue {
 		youtube: Connection;
 		twitch: Connection;
 		battlenet: Connection;
+		facebook: Connection;
 	}
 }
 
@@ -453,6 +454,11 @@ export const DefaultConfigOptions: ConfigValue = {
 			clientSecret: null
 		},
 		battlenet: {
+			enabled: false,
+			clientId: null,
+			clientSecret: null
+		},
+		facebook: {
 			enabled: false,
 			clientId: null,
 			clientSecret: null
