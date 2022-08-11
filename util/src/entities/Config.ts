@@ -219,6 +219,7 @@ export interface ConfigValue {
 		epicgames: Connection;
 		youtube: Connection;
 		twitch: Connection;
+		battlenet: Connection;
 	}
 }
 
@@ -447,6 +448,11 @@ export const DefaultConfigOptions: ConfigValue = {
 			clientSecret: null
 		},
 		twitch: {
+			enabled: false,
+			clientId: null,
+			clientSecret: null
+		},
+		battlenet: {
 			enabled: false,
 			clientId: null,
 			clientSecret: null

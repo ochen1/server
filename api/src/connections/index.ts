@@ -4,3 +4,4 @@ export * from "./RedditConnection";
 export * from "./EpicGamesConnection";
 export * from "./YouTubeConnection";
 export * from "./TwitchConnection";
+export * from "./BattleNetConnection";
