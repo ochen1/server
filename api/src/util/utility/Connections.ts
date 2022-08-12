@@ -6,6 +6,7 @@ import {
 	GitHubConnection,
 	RedditConnection,
 	TwitchConnection,
+	TwitterConnection,
 	YouTubeConnection
 } from "../../connections";
 
@@ -27,7 +28,8 @@ export const Connections: {
 		youtube: new YouTubeConnection(),
 		twitch: new TwitchConnection(),
 		battlenet: new BattleNetConnection(),
-		facebook: new FacebookConnection()
+		facebook: new FacebookConnection(),
+		twitter: new TwitterConnection()
 	},
 	init: () => {
 		for (const connection of Object.values(Connections.connections)) {

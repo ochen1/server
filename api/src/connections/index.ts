@@ -6,3 +6,4 @@ export * from "./YouTubeConnection";
 export * from "./TwitchConnection";
 export * from "./BattleNetConnection";
 export * from "./FacebookConnection";
+export * from "./TwitterConnection";

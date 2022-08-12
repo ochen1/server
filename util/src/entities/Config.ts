@@ -221,6 +221,7 @@ export interface ConfigValue {
 		twitch: Connection;
 		battlenet: Connection;
 		facebook: Connection;
+		twitter: Connection;
 	}
 }
 
@@ -459,6 +460,11 @@ export const DefaultConfigOptions: ConfigValue = {
 			clientSecret: null
 		},
 		facebook: {
+			enabled: false,
+			clientId: null,
+			clientSecret: null
+		},
+		twitter: {
 			enabled: false,
 			clientId: null,
 			clientSecret: null
