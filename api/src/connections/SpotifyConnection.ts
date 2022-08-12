@@ -26,7 +26,7 @@ export class SpotifyConnection extends BaseConnection {
 			authorizeUrl: "https://accounts.spotify.com/authorize",
 			tokenUrl: "https://accounts.spotify.com/api/token",
 			userInfoUrl: "https://api.spotify.com/v1/me",
-			scopes: ["user-read-private"]
+			scopes: ["user-read-private", "user-read-playback-state", "user-modify-playback-state", "user-read-currently-playing"]
 		});
 	}
 
