@@ -222,6 +222,7 @@ export interface ConfigValue {
 		battlenet: Connection;
 		facebook: Connection;
 		twitter: Connection;
+		spotify: Connection;
 	}
 }
 
@@ -465,6 +466,11 @@ export const DefaultConfigOptions: ConfigValue = {
 			clientSecret: null
 		},
 		twitter: {
+			enabled: false,
+			clientId: null,
+			clientSecret: null
+		},
+		spotify: {
 			enabled: false,
 			clientId: null,
 			clientSecret: null
