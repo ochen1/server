@@ -91,7 +91,7 @@ export class SpotifyConnection extends BaseConnection {
 			});
 	}
 
-	createConnection(userId: string, friend_sync: boolean, userInfo: SpotifyConnectionUser): ConnectedAccount {
+	createConnection(userId: string, friend_sync: boolean, userInfo: SpotifyConnectionUser, token: string): ConnectedAccount {
 		return new ConnectedAccount({
 			user_id: userId,
 			external_id: userInfo.id,
@@ -102,7 +102,8 @@ export class SpotifyConnection extends BaseConnection {
 			type: this.options.id,
 			verified: true,
 			visibility: 0,
-			integrations: []
+			integrations: [],
+			access_token: token
 		});
 	}
 }
