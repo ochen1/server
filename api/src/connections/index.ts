@@ -8,3 +8,4 @@ export * from "./BattleNetConnection";
 export * from "./FacebookConnection";
 export * from "./TwitterConnection";
 export * from "./SpotifyConnection";
+export * from "./XboxConnection";

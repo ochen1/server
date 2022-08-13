@@ -223,6 +223,7 @@ export interface ConfigValue {
 		facebook: Connection;
 		twitter: Connection;
 		spotify: Connection;
+		xbox: Connection;
 	}
 }
 
@@ -471,6 +472,11 @@ export const DefaultConfigOptions: ConfigValue = {
 			clientSecret: null
 		},
 		spotify: {
+			enabled: false,
+			clientId: null,
+			clientSecret: null
+		},
+		xbox: {
 			enabled: false,
 			clientId: null,
 			clientSecret: null

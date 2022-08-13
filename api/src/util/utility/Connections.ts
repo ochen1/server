@@ -8,6 +8,7 @@ import {
 	SpotifyConnection,
 	TwitchConnection,
 	TwitterConnection,
+	XboxConnection,
 	YouTubeConnection
 } from "../../connections";
 
@@ -31,7 +32,8 @@ export const Connections: {
 		battlenet: new BattleNetConnection(),
 		facebook: new FacebookConnection(),
 		twitter: new TwitterConnection(),
-		spotify: new SpotifyConnection()
+		spotify: new SpotifyConnection(),
+		xbox: new XboxConnection()
 	},
 	init: () => {
 		for (const connection of Object.values(Connections.connections)) {
