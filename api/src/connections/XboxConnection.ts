@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
+import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
 export interface XboxConnectionUserResponse {
 	IssueInstant: string;
@@ -24,7 +24,7 @@ export interface XboxConnectionErrorResponse {
 	error_description: string;
 }
 
-export class XboxConnection extends BaseConnection {
+export class XboxConnection extends BaseOAuthConnection {
 	constructor() {
 		super({
 			id: "xbox",

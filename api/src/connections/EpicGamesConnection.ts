@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
+import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
 export interface EpicGamesConnectionUserLinkedAccount {
 	identityProviderId: string;
@@ -23,7 +23,7 @@ export interface EpicGamesConnectionTokenResponse extends OAuthTokenResponse {
 	application_id: string;
 }
 
-export class EpicGamesConnection extends BaseConnection {
+export class EpicGamesConnection extends BaseOAuthConnection {
 	constructor() {
 		super({
 			id: "epicgames",

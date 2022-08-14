@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
+import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
 export interface YouTubeConnectionChannelListResult {
 	items: {
@@ -24,7 +24,7 @@ export interface YouTubeConnectionChannelListResult {
 	};
 }
 
-export class YouTubeConnection extends BaseConnection {
+export class YouTubeConnection extends BaseOAuthConnection {
 	constructor() {
 		super({
 			id: "youtube",

@@ -1,4 +1,4 @@
-export * from "./BaseConnection";
+export * from "./BaseOAuthConnection";
 export * from "./GitHubConnection";
 export * from "./RedditConnection";
 export * from "./EpicGamesConnection";

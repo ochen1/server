@@ -196,23 +196,23 @@ export interface ConfigValue {
 		allowTemplateCreation: Boolean;
 		allowDiscordTemplates: Boolean;
 		allowRaws: Boolean;
-	},
+	};
 	client: {
 		useTestClient: Boolean;
 		releases: {
 			useLocalRelease: Boolean; //TODO
 			upstreamVersion: string;
-		}
-	},
+		};
+	};
 	metrics: {
 		timeout: number;
-	},
+	};
 	sentry: {
 		enabled: boolean;
 		endpoint: string;
 		traceSampleRate: number;
 		environment: string;
-	},
+	};
 	connections: {
 		github: Connection;
 		reddit: Connection;
@@ -224,7 +224,11 @@ export interface ConfigValue {
 		twitter: Connection;
 		spotify: Connection;
 		xbox: Connection;
-	}
+		steam: {
+			enabled: boolean;
+			apiKey: string | null;
+		};
+	};
 }
 
 export const DefaultConfigOptions: ConfigValue = {
@@ -412,23 +416,23 @@ export const DefaultConfigOptions: ConfigValue = {
 		enabled: true,
 		allowTemplateCreation: true,
 		allowDiscordTemplates: true,
-		allowRaws: false
+		allowRaws: false,
 	},
 	client: {
 		useTestClient: true,
 		releases: {
 			useLocalRelease: true,
-			upstreamVersion: "0.0.264"
-		}
+			upstreamVersion: "0.0.264",
+		},
 	},
 	metrics: {
-		timeout: 30000
+		timeout: 30000,
 	},
 	sentry: {
 		enabled: false,
 		endpoint: "https://05e8e3d005f34b7d97e920ae5870a5e5@sentry.thearcanebrony.net/6",
 		traceSampleRate: 1.0,
-		environment: hostname()
+		environment: hostname(),
 	},
 	connections: {
 		github: {
@@ -439,47 +443,51 @@ export const DefaultConfigOptions: ConfigValue = {
 		reddit: {
 			enabled: false,
 			clientId: null,
-			clientSecret: null
+			clientSecret: null,
 		},
 		epicgames: {
 			enabled: false,
 			clientId: null,
-			clientSecret: null
+			clientSecret: null,
 		},
 		youtube: {
 			enabled: false,
 			clientId: null,
-			clientSecret: null
+			clientSecret: null,
 		},
 		twitch: {
 			enabled: false,
 			clientId: null,
-			clientSecret: null
+			clientSecret: null,
 		},
 		battlenet: {
 			enabled: false,
 			clientId: null,
-			clientSecret: null
+			clientSecret: null,
 		},
 		facebook: {
 			enabled: false,
 			clientId: null,
-			clientSecret: null
+			clientSecret: null,
 		},
 		twitter: {
 			enabled: false,
 			clientId: null,
-			clientSecret: null
+			clientSecret: null,
 		},
 		spotify: {
 			enabled: false,
 			clientId: null,
-			clientSecret: null
+			clientSecret: null,
 		},
 		xbox: {
 			enabled: false,
 			clientId: null,
-			clientSecret: null
-		}
-	}
+			clientSecret: null,
+		},
+		steam: {
+			enabled: false,
+			apiKey: null,
+		},
+	},
 };

@@ -1,4 +1,408 @@
 {
+    "OAuthTokenResponse": {
+        "type": "object",
+        "properties": {
+            "access_token": {
+                "type": "string"
+            },
+            "token_type": {
+                "type": "string"
+            },
+            "scope": {
+                "type": "string"
+            },
+            "refresh_token": {
+                "type": "string"
+            },
+            "expires_in": {
+                "type": "integer"
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "access_token",
+            "scope",
+            "token_type"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "RedditConnectionErrorResponse": {
+        "type": "object",
+        "properties": {
+            "message": {
+                "type": "string"
+            },
+            "error": {
+                "type": "integer"
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "error",
+            "message"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "EpicGamesConnectionTokenResponse": {
+        "type": "object",
+        "properties": {
+            "expires_at": {
+                "type": "string"
+            },
+            "refresh_expires_in": {
+                "type": "integer"
+            },
+            "refresh_expires_at": {
+                "type": "string"
+            },
+            "account_id": {
+                "type": "string"
+            },
+            "client_id": {
+                "type": "string"
+            },
+            "application_id": {
+                "type": "string"
+            },
+            "access_token": {
+                "type": "string"
+            },
+            "token_type": {
+                "type": "string"
+            },
+            "scope": {
+                "type": "string"
+            },
+            "refresh_token": {
+                "type": "string"
+            },
+            "expires_in": {
+                "type": "integer"
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "access_token",
+            "account_id",
+            "application_id",
+            "client_id",
+            "expires_at",
+            "refresh_expires_at",
+            "refresh_expires_in",
+            "scope",
+            "token_type"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "TwitchConnectionUserResponse": {
+        "type": "object",
+        "properties": {
+            "data": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "login": {
+                            "type": "string"
+                        },
+                        "display_name": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "broadcaster_type": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "profile_image_url": {
+                            "type": "string"
+                        },
+                        "offline_image_url": {
+                            "type": "string"
+                        },
+                        "view_count": {
+                            "type": "integer"
+                        },
+                        "created_at": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "broadcaster_type",
+                        "created_at",
+                        "description",
+                        "display_name",
+                        "id",
+                        "login",
+                        "offline_image_url",
+                        "profile_image_url",
+                        "type",
+                        "view_count"
+                    ]
+                }
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "BattleNetErrorResponse": {
+        "type": "object",
+        "properties": {
+            "error": {
+                "type": "string"
+            },
+            "error_description": {
+                "type": "string"
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "error",
+            "error_description"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "FacebookErrorResponse": {
+        "type": "object",
+        "properties": {
+            "error": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "integer"
+                    },
+                    "fbtrace_id": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "code",
+                    "fbtrace_id",
+                    "message",
+                    "type"
+                ]
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "error"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "TwitterConnectionUserResponse": {
+        "type": "object",
+        "properties": {
+            "data": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "verified": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "created_at",
+                    "description",
+                    "id",
+                    "location",
+                    "name",
+                    "url",
+                    "username",
+                    "verified"
+                ]
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "TwitterConnectionErrorResponse": {
+        "type": "object",
+        "properties": {
+            "error": {
+                "type": "string"
+            },
+            "error_description": {
+                "type": "string"
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "error",
+            "error_description"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SpotifyConnectionTokenErrorResponse": {
+        "type": "object",
+        "properties": {
+            "error": {
+                "type": "string"
+            },
+            "error_description": {
+                "type": "string"
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "error",
+            "error_description"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SpotifyConnectionErrorResponse": {
+        "type": "object",
+        "properties": {
+            "error": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "message",
+                    "status"
+                ]
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "error"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "XboxConnectionUserResponse": {
+        "type": "object",
+        "properties": {
+            "IssueInstant": {
+                "type": "string"
+            },
+            "NotAfter": {
+                "type": "string"
+            },
+            "Token": {
+                "type": "string"
+            },
+            "DisplayClaims": {
+                "type": "object",
+                "properties": {
+                    "xui": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "gtg": {
+                                    "type": "string"
+                                },
+                                "xid": {
+                                    "type": "string"
+                                },
+                                "uhs": {
+                                    "type": "string"
+                                },
+                                "agg": {
+                                    "type": "string"
+                                },
+                                "usr": {
+                                    "type": "string"
+                                },
+                                "utr": {
+                                    "type": "string"
+                                },
+                                "prv": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                                "agg",
+                                "gtg",
+                                "prv",
+                                "uhs",
+                                "usr",
+                                "utr",
+                                "xid"
+                            ]
+                        }
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "xui"
+                ]
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "DisplayClaims",
+            "IssueInstant",
+            "NotAfter",
+            "Token"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "XboxConnectionErrorResponse": {
+        "type": "object",
+        "properties": {
+            "error": {
+                "type": "string"
+            },
+            "error_description": {
+                "type": "string"
+            }
+        },
+        "additionalProperties": false,
+        "required": [
+            "error",
+            "error_description"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+    },
     "ConnectionAuthCallbackSchema": {
         "type": "object",
         "properties": {
@@ -13,14 +417,60 @@
             },
             "state": {
                 "type": "string"
+            },
+            "openid_params": {
+                "type": "object",
+                "properties": {
+                    "openid.assoc_handle": {
+                        "type": "string"
+                    },
+                    "openid.claimed_id": {
+                        "type": "string"
+                    },
+                    "openid.identity": {
+                        "type": "string"
+                    },
+                    "openid.mode": {
+                        "type": "string"
+                    },
+                    "openid.ns": {
+                        "type": "string"
+                    },
+                    "openid.op_endpoint": {
+                        "type": "string"
+                    },
+                    "openid.response_nonce": {
+                        "type": "string"
+                    },
+                    "openid.return_to": {
+                        "type": "string"
+                    },
+                    "openid.sig": {
+                        "type": "string"
+                    },
+                    "openid.signed": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "openid.assoc_handle",
+                    "openid.claimed_id",
+                    "openid.identity",
+                    "openid.mode",
+                    "openid.ns",
+                    "openid.op_endpoint",
+                    "openid.response_nonce",
+                    "openid.return_to",
+                    "openid.sig",
+                    "openid.signed"
+                ]
             }
         },
         "additionalProperties": false,
         "required": [
-            "code",
             "friend_sync",
-            "insecure",
-            "state"
+            "insecure"
         ],
         "$schema": "http://json-schema.org/draft-07/schema#"
     },

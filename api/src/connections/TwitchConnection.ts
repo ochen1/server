@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
+import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
 export interface TwitchConnectionUserResponse {
 	data: {
@@ -17,7 +17,7 @@ export interface TwitchConnectionUserResponse {
 	}[];
 }
 
-export class TwitchConnection extends BaseConnection {
+export class TwitchConnection extends BaseOAuthConnection {
 	constructor() {
 		super({
 			id: "twitch",

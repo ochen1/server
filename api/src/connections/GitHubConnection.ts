@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
+import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
 // TODO: do we really need all this when we only use name?
 export interface GitHubConnectionUser {
@@ -50,7 +50,7 @@ export interface GitHubConnectionUser {
 	};
 }
 
-export class GitHubConnection extends BaseConnection {
+export class GitHubConnection extends BaseOAuthConnection {
 	constructor() {
 		super({
 			id: "github",

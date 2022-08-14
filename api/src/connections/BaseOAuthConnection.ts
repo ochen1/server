@@ -9,12 +9,6 @@ export interface ConnectionOptions {
 	scopes: string[];
 }
 
-export interface ConnectionConfigValue {
-	enabled: boolean;
-	clientId: string;
-	clientSecret: string;
-}
-
 export interface OAuthTokenResponse {
 	access_token: string;
 	token_type: string;
@@ -23,7 +17,7 @@ export interface OAuthTokenResponse {
 	expires_in?: number;
 }
 
-export abstract class BaseConnection {
+export abstract class BaseOAuthConnection {
 	public options: ConnectionOptions;
 	public enabled: boolean = false;
 	public clientId: string;
@@ -35,7 +29,7 @@ export abstract class BaseConnection {
 	}
 
 	init(): void {
-		const config = (Config.get().connections as { [key: string]: ConnectionConfigValue })[this.options.id];
+		const config = (Config.get().connections as { [key: string]: any })[this.options.id];
 		this.enabled = config.enabled;
 		this.clientId = config.clientId;
 		this.clientSecret = config.clientSecret;
@@ -50,6 +44,7 @@ export abstract class BaseConnection {
 
 	validateState(state: string): void {
 		if (!this.states.includes(state)) throw DiscordApiErrors.INVALID_OAUTH_STATE;
+		this.states.remove(state);
 	}
 
 	isEnabled(): boolean {

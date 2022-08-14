@@ -1,5 +1,5 @@
 import {
-	BaseConnection,
+	BaseOAuthConnection,
 	BattleNetConnection,
 	EpicGamesConnection,
 	FacebookConnection,
@@ -11,16 +11,30 @@ import {
 	XboxConnection,
 	YouTubeConnection
 } from "../../connections";
+import { BaseOIDConnection } from "../../connections/BaseOIDConnection";
+import { SteamConnection } from "../../connections/SteamConnection";
 
 export interface ConnectionAuthCallbackSchema {
-	code: string;
+	code?: string;
 	friend_sync: boolean;
 	insecure: boolean;
-	state: string;
+	state?: string;
+	openid_params?: {
+		"openid.assoc_handle": string;
+		"openid.claimed_id": string;
+		"openid.identity": string;
+		"openid.mode": string;
+		"openid.ns": string;
+		"openid.op_endpoint": string;
+		"openid.response_nonce": string;
+		"openid.return_to": string;
+		"openid.sig": string;
+		"openid.signed": string;
+	};
 }
 
 export const Connections: {
-	connections: { [key: string]: BaseConnection };
+	connections: { [key: string]: BaseOAuthConnection | BaseOIDConnection };
 	init: () => void;
 } = {
 	connections: {
@@ -33,7 +47,8 @@ export const Connections: {
 		facebook: new FacebookConnection(),
 		twitter: new TwitterConnection(),
 		spotify: new SpotifyConnection(),
-		xbox: new XboxConnection()
+		xbox: new XboxConnection(),
+		steam: new SteamConnection()
 	},
 	init: () => {
 		for (const connection of Object.values(Connections.connections)) {

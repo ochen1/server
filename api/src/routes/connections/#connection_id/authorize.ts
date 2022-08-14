@@ -24,7 +24,7 @@ router.get("/", route({}), async (req: Request, res: Response) => {
 		});
 
 	res.json({
-		url: connection.makeAuthorizeUrl()
+		url: await connection.makeAuthorizeUrl()
 	});
 });
 

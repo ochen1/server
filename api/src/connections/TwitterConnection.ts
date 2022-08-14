@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
+import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
 export interface TwitterConnectionUserResponse {
 	data: {
@@ -20,7 +20,7 @@ export interface TwitterConnectionErrorResponse {
 	error_description: string;
 }
 
-export class TwitterConnection extends BaseConnection {
+export class TwitterConnection extends BaseOAuthConnection {
 	constructor() {
 		super({
 			id: "twitter",

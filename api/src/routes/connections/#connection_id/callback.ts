@@ -25,7 +25,16 @@ router.post("/", route({ body: "ConnectionAuthCallbackSchema" }), async (req: Re
 			}
 		});
 
-	const token = await connection.exchangeCode(body.code, body.state);
+	if (!(body.code && body.state) && !body.openid_params) {
+		throw FieldErrors({
+			code: {
+				message: "Missing code and state or openid_params."
+			}
+		});
+	}
+
+	// for OID, this just returns the user's id
+	const token = await connection.exchangeCode(body.code! ?? body.openid_params?.["openid.claimed_id"]!, body.state!);
 	const userInfo = await connection.getUser(token);
 	const connectedAccount = connection.createConnection(req.user_id, body.friend_sync, userInfo, token);
 	await connectedAccount.save();

@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
+import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
 export interface BattleNetConnectionUser {
 	sub: string;
@@ -13,7 +13,7 @@ export interface BattleNetErrorResponse {
 	error_description: string;
 }
 
-export class BattleNetConnection extends BaseConnection {
+export class BattleNetConnection extends BaseOAuthConnection {
 	constructor() {
 		// TODO: battlenet has multiple domains for different regions (US, EU, APAC, CN), do we NEED to use specific regions?
 		super({

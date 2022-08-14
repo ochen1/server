@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
+import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
 export interface FacebookConnectionUser {
 	name: string;
@@ -16,7 +16,7 @@ export interface FacebookErrorResponse {
 	};
 }
 
-export class FacebookConnection extends BaseConnection {
+export class FacebookConnection extends BaseOAuthConnection {
 	constructor() {
 		super({
 			id: "facebook",

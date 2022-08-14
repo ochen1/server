@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
+import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
 export interface SpotifyConnectionUser {
 	display_name: string;
@@ -19,7 +19,7 @@ export interface SpotifyConnectionErrorResponse {
 	};
 }
 
-export class SpotifyConnection extends BaseConnection {
+export class SpotifyConnection extends BaseOAuthConnection {
 	constructor() {
 		super({
 			id: "spotify",

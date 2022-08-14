@@ -1,6 +1,6 @@
 import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
 import fetch from "node-fetch";
-import { BaseConnection, OAuthTokenResponse } from "./BaseConnection";
+import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
 // TODO: do we really need all this when we only use name?
 export interface RedditConnectionUser {
@@ -73,7 +73,7 @@ export interface RedditConnectionErrorResponse {
 	message: string;
 	error: number;
 }
-export class RedditConnection extends BaseConnection {
+export class RedditConnection extends BaseOAuthConnection {
 	constructor() {
 		super({
 			id: "reddit",
