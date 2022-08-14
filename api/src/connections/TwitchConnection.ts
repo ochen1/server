@@ -1,4 +1,4 @@
-import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
+import { Config, ConnectedAccount, DiscordApiErrors, OrmUtils } from "@fosscord/util";
 import fetch from "node-fetch";
 import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
@@ -89,7 +89,7 @@ export class TwitchConnection extends BaseOAuthConnection {
 	}
 
 	createConnection(userId: string, friend_sync: boolean, userInfo: TwitchConnectionUserResponse, token: string): ConnectedAccount {
-		return new ConnectedAccount({
+		return OrmUtils.mergeDeep(new ConnectedAccount(), {
 			user_id: userId,
 			external_id: userInfo.data[0].id,
 			access_token: token,

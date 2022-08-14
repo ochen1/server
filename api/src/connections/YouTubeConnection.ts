@@ -1,4 +1,4 @@
-import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
+import { Config, ConnectedAccount, DiscordApiErrors, OrmUtils } from "@fosscord/util";
 import fetch from "node-fetch";
 import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
@@ -95,7 +95,7 @@ export class YouTubeConnection extends BaseOAuthConnection {
 		channelInfo: YouTubeConnectionChannelListResult,
 		token: string
 	): ConnectedAccount {
-		return new ConnectedAccount({
+		return OrmUtils.mergeDeep(new ConnectedAccount(), {
 			user_id: userId,
 			external_id: channelInfo.items[0].id,
 			access_token: token,

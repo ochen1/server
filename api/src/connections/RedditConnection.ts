@@ -1,72 +1,18 @@
-import { Config, ConnectedAccount, DiscordApiErrors } from "@fosscord/util";
+import { Config, ConnectedAccount, DiscordApiErrors, OrmUtils } from "@fosscord/util";
 import fetch from "node-fetch";
 import { BaseOAuthConnection, OAuthTokenResponse } from "./BaseOAuthConnection";
 
-// TODO: do we really need all this when we only use name?
 export interface RedditConnectionUser {
-	is_employee: boolean;
-	seen_layout_switch: boolean;
-	has_visited_new_profile: boolean;
-	pref_no_profanity: boolean;
-	has_external_account: boolean;
-	pref_geopopular: string;
-	seen_redesign_modal: boolean;
-	pref_show_trending: boolean;
-	// subreddit: Subreddit;
-	pref_show_presence: boolean;
-	snoovatar_img: string;
-	snoovatar_size?: number[] | null;
-	gold_expiration?: null;
-	has_gold_subscription: boolean;
-	is_sponsor: boolean;
-	num_friends: number;
-	// features: Features;
-	can_edit_name: boolean;
 	verified: boolean;
-	pref_autoplay: boolean;
 	coins: number;
-	has_paypal_subscription: boolean;
-	has_subscribed_to_premium: boolean;
 	id: string;
-	has_stripe_subscription: boolean;
-	oauth_client_id: string;
-	can_create_subreddit: boolean;
-	over_18: boolean;
-	is_gold: boolean;
 	is_mod: boolean;
-	awarder_karma: number;
-	suspension_expiration_utc?: null;
 	has_verified_email: boolean;
-	is_suspended: boolean;
-	pref_video_autoplay: boolean;
-	has_android_subscription: boolean;
-	in_redesign_beta: boolean;
-	icon_img: string;
-	pref_nightmode: boolean;
-	awardee_karma: number;
-	hide_from_robots: boolean;
-	password_set: boolean;
-	link_karma: number;
-	force_password_reset: boolean;
 	total_karma: number;
-	seen_give_award_tooltip: boolean;
-	inbox_count: number;
-	seen_premium_adblock_modal: boolean;
-	pref_top_karma_subreddits: boolean;
-	pref_show_snoovatar: boolean;
 	name: string;
-	pref_clickgadget: number;
 	created: number;
 	gold_creddits: number;
 	created_utc: number;
-	has_ios_subscription: boolean;
-	pref_show_twitter: boolean;
-	in_beta: boolean;
-	comment_karma: number;
-	accept_followers: boolean;
-	has_subscribed: boolean;
-	linked_identities?: string[] | null;
-	seen_subreddit_chat_ftux: boolean;
 }
 
 export interface RedditConnectionErrorResponse {
@@ -142,7 +88,7 @@ export class RedditConnection extends BaseOAuthConnection {
 
 	createConnection(userId: string, friend_sync: boolean, userInfo: RedditConnectionUser): ConnectedAccount {
 		// TODO: metadata: gold, mod, total_karma, created_at
-		return new ConnectedAccount({
+		return OrmUtils.mergeDeep(new ConnectedAccount(), {
 			user_id: userId,
 			external_id: userInfo.id,
 			friend_sync: friend_sync,

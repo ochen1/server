@@ -1,4 +1,4 @@
-import { Config, ConnectedAccount } from "@fosscord/util";
+import { Config, ConnectedAccount, OrmUtils } from "@fosscord/util";
 import fetch from "node-fetch";
 import { BaseOIDConnection } from "./BaseOIDConnection";
 
@@ -43,7 +43,7 @@ export class SteamConnection extends BaseOIDConnection {
 	}
 
 	createConnection(userId: string, friend_sync: boolean, userInfo: SteamConnectionUserInfo): ConnectedAccount {
-		return new ConnectedAccount({
+		return OrmUtils.mergeDeep(new ConnectedAccount(), {
 			user_id: userId,
 			external_id: userInfo.steamid,
 			friend_sync: friend_sync,
