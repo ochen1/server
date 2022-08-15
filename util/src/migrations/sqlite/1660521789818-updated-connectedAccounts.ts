@@ -6,7 +6,7 @@ export class updateConnectedAccounts1660521789818 implements MigrationInterface 
 			CREATE TABLE "temporary_connected_accounts" (
 				"id"	varchar NOT NULL,
 				"user_id"	varchar,
-				"access_token"	varchar NOT NULL,
+				"access_token"	varchar,
 				"friend_sync"	boolean NOT NULL,
 				"name"	varchar NOT NULL,
 				"revoked"	boolean NOT NULL,
