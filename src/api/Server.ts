@@ -94,6 +94,7 @@ export class FosscordServer extends Server {
 		app.use("/api/v7", api);
 		app.use("/api/v8", api);
 		app.use("/api/v9", api);
+		app.use("/api/v10", api);
 		app.use("/api", api); // allow unversioned requests
 
 		this.app.use(ErrorHandler);
