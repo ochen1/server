@@ -136,7 +136,7 @@ router.patch("/", route({ body: "UserProfileModifySchema" }), async (req: Reques
 	const body = req.body as UserProfileModifySchema;
 
 	if (body.banner) body.banner = await handleFile(`/banners/${req.user_id}`, body.banner as string);
-	let user = await User.findOneOrFail({ where: { id: req.user_id }, select: [...PrivateUserProjection, "data"] });
+	let user = await User.findOneOrFail({ where: { id: req.user_id }, select: PrivateUserProjection });
 
 	user.assign(body);
 	await user.save();

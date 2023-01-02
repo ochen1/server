@@ -22,6 +22,7 @@ import {
 	trimSpecial,
 	adjustEmail,
 } from "..";
+import { UserAuth } from "./UserAuth";
 
 export enum PublicUserEnum {
 	username,
@@ -98,10 +99,10 @@ export class User extends BaseClass {
 	mobile: boolean = false; // if the user has mobile app installed
 
 	@Column()
-	premium: boolean = false; // if user bought individual premium
+	premium: boolean = Config.get().defaults.user.premium; // if user bought individual premium
 
 	@Column()
-	premium_type: number = 0; // individual premium level
+	premium_type: number = Config.get().defaults.user.premium_type; // individual premium level
 
 	@Column()
 	bot: boolean = false; // if user is bot
@@ -118,12 +119,6 @@ export class User extends BaseClass {
 	@Column({ select: false })
 	mfa_enabled: boolean = false; // if multi factor authentication is enabled
 
-	@Column({ select: false, nullable: true })
-	totp_secret?: string = "";
-
-	@Column({ nullable: true, select: false })
-	totp_last_ticket?: string = "";
-
 	@Column()
 	created_at: Date = new Date(); // registration date
 
@@ -131,7 +126,7 @@ export class User extends BaseClass {
 	premium_since: Date = new Date(); // premium date
 
 	@Column({ select: false })
-	verified: boolean = true;	// email is verified
+	verified: boolean = Config.get().defaults.user.verified;	// email is verified
 
 	@Column()
 	disabled: boolean = false; // if the account is disabled
@@ -155,7 +150,7 @@ export class User extends BaseClass {
 	premium_usage_flags: number = 0;
 
 	@Column({ type: "bigint" })
-	rights: string; // Rights
+	rights: string = Config.get().register.defaultRights;
 
 	@OneToMany(() => Session, (session: Session) => session.user)
 	sessions: Session[];
@@ -181,12 +176,6 @@ export class User extends BaseClass {
 		},
 	)
 	connected_accounts: ConnectedAccount[];
-
-	@Column({ type: "simple-json", select: false })
-	data: {
-		valid_tokens_since: Date; // all tokens with a previous issue date are invalid
-		hash?: string; // hash of the password, salt is saved in password (bcrypt)
-	};
 
 	@Column({ type: "simple-array", select: false })
 	fingerprints: string[] = []; // array of fingerprints -> used to prevent multiple accounts
@@ -338,30 +327,29 @@ export class User extends BaseClass {
 
 		const settings = UserSettings.create({
 			locale: language,
-		})
+		});
 
 		const user = User.create({
 			username: username,
 			discriminator,
 			id: id || Snowflake.generate(),
 			email: email,
-			rights: Config.get().register.defaultRights,
-			data: {
-				hash: password,
-				valid_tokens_since: new Date(),
-			},
 			extended_settings: "{}",
-			premium_type: Config.get().defaults.user.premium_type,
-			premium: Config.get().defaults.user.premium,
-			verified: Config.get().defaults.user.verified,
 			settings: settings,
+		});
+
+		const auth = UserAuth.create({
+			user: user,
+			valid_tokens_since: new Date(),
+			password,
 		});
 
 		user.validate();
 		await Promise.all([
 			user.save(),
 			settings.save(),
-		])
+			auth.save(),
+		]);
 
 		setImmediate(async () => {
 			if (Config.get().guild.autoJoin.enabled) {

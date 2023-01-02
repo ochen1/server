@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { route } from "@fosscord/api";
-import { Application, generateToken, User, BotModifySchema, handleFile, DiscordApiErrors } from "@fosscord/util";
+import { Application, generateToken, User, BotModifySchema, handleFile, DiscordApiErrors, UserAuth } from "@fosscord/util";
 import { HTTPError } from "lambert-server";
 import { verifyToken } from "node-2fa";
 
@@ -36,20 +36,38 @@ router.post("/", route({}), async (req: Request, res: Response) => {
 });
 
 router.post("/reset", route({}), async (req: Request, res: Response) => {
-	let bot = await User.findOneOrFail({ where: { id: req.params.id } });
-	let owner = await User.findOneOrFail({ where: { id: req.user_id } });
+	let [botAuth, app, ourAUth] = await Promise.all([
+		UserAuth.findOneOrFail({
+			where: {
+				user: { id: req.params.id }
+			},
+			relations: ["user"]
+		}),
 
-	if (owner.id != req.user_id)
+		Application.findOneOrFail({
+			where: { id: req.params.id },
+			relations: ["owner"],
+			select: { owner: { id: true } }
+		}),
+
+		UserAuth.findOneOrFail({
+			where: { user: { id: req.user_id } }
+		}),
+	]);
+
+	// TODO: Teams
+	if (app.owner.id != req.user_id)
 		throw DiscordApiErrors.ACTION_NOT_AUTHORIZED_ON_APPLICATION;
 
-	if (owner.totp_secret && (!req.body.code || verifyToken(owner.totp_secret, req.body.code)))
+	if (ourAUth.totp_secret && (!req.body.code || verifyToken(ourAUth.totp_secret, req.body.code)))
 		throw new HTTPError(req.t("auth:login.INVALID_TOTP_CODE"), 60008);
 
-	bot.data = { hash: undefined, valid_tokens_since: new Date() };
+	botAuth.password = undefined;
+	botAuth.valid_tokens_since = new Date();
 
-	await bot.save();
+	await botAuth.save();
 
-	let token = await generateToken(bot.id);
+	let token = await generateToken(botAuth.user.id);
 
 	res.json({ token }).status(200);
 });

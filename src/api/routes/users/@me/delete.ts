@@ -1,38 +1,32 @@
 import { Router, Request, Response } from "express";
-import { Guild, Member, User } from "@fosscord/util";
+import { DiscordApiErrors, FieldErrors, Member, User, UserAuth } from "@fosscord/util";
 import { route } from "@fosscord/api";
 import bcrypt from "bcrypt";
-import { HTTPError } from "lambert-server";
 
 const router = Router();
 
 router.post("/", route({}), async (req: Request, res: Response) => {
-	const user = await User.findOneOrFail({
-		where: { id: req.user_id },
-		select: ["data"],
-	}); //User object
-	let correctpass = true;
+	const auth = await UserAuth.findOneOrFail({
+		where: { user: { id: req.user_id } }
+	});
 
-	if (user.data.hash) {
-		// guest accounts can delete accounts without password
-		correctpass = await bcrypt.compare(req.body.password, user.data.hash);
-		if (!correctpass) {
-			throw new HTTPError(req.t("auth:login.INVALID_PASSWORD"));
+	if (auth.password) {
+		if (!await bcrypt.compare(req.body.password, auth.password)) {
+			throw FieldErrors({
+				password: {
+					message: req.t("auth:login.INVALID_PASSWORD"),
+					code: "INVALID_PASSWORD",
+				},
+			});
 		}
 	}
 
-	// TODO: decrement guild member count
+	await Promise.all([
+		User.delete({ id: req.user_id }),
+		Member.delete({ id: req.user_id }),
+	]);
 
-	if (correctpass) {
-		await Promise.all([
-			User.delete({ id: req.user_id }),
-			Member.delete({ id: req.user_id }),
-		]);
-
-		res.sendStatus(204);
-	} else {
-		res.sendStatus(401);
-	}
+	return res.status(204);
 });
 
 export default router;

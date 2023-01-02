@@ -4,6 +4,7 @@ import {
 	generateToken,
 	generateMfaBackupCodes,
 	TotpEnableSchema,
+	UserAuth,
 } from "@fosscord/util";
 import { route } from "@fosscord/api";
 import bcrypt from "bcrypt";
@@ -18,14 +19,11 @@ router.post(
 	async (req: Request, res: Response) => {
 		const body = req.body as TotpEnableSchema;
 
-		const user = await User.findOneOrFail({
-			where: { id: req.user_id },
-			select: ["data", "email"],
-		});
+		const auth = await UserAuth.findOneOrFail({ where: { user: { id: req.user_id } } });
 
 		// TODO: Are guests allowed to enable 2fa?
-		if (user.data.hash) {
-			if (!(await bcrypt.compare(body.password, user.data.hash))) {
+		if (auth.password) {
+			if (!(await bcrypt.compare(body.password, auth.password || ""))) {
 				throw new HTTPError(req.t("auth:login.INVALID_PASSWORD"));
 			}
 		}
@@ -40,14 +38,14 @@ router.post(
 			throw new HTTPError(req.t("auth:login.INVALID_TOTP_CODE"), 60008);
 
 		let backup_codes = generateMfaBackupCodes(req.user_id);
-		await Promise.all(backup_codes.map((x) => x.save()));
-		await User.update(
-			{ id: req.user_id },
-			{ mfa_enabled: true, totp_secret: body.secret },
-		);
+		await Promise.all([
+			...backup_codes.map((x) => x.save()),
+			User.update({ id: req.user_id }, { mfa_enabled: true }),
+			UserAuth.update({ index: auth.index }, { totp_secret: body.secret })
+		]);
 
 		res.send({
-			token: await generateToken(user.id),
+			token: await generateToken(auth.user.id),
 			backup_codes: backup_codes.map((x) => ({
 				...x,
 				expired: undefined,

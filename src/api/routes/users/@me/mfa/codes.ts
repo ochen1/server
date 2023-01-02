@@ -6,6 +6,7 @@ import {
 	generateMfaBackupCodes,
 	User,
 	MfaCodesSchema,
+	UserAuth,
 } from "@fosscord/util";
 import bcrypt from "bcrypt";
 
@@ -19,12 +20,9 @@ router.post(
 	async (req: Request, res: Response) => {
 		const { password, regenerate } = req.body as MfaCodesSchema;
 
-		const user = await User.findOneOrFail({
-			where: { id: req.user_id },
-			select: ["data"],
-		});
+		const auth = await UserAuth.findOneOrFail({ where: { user: { id: req.user_id } } });
 
-		if (!(await bcrypt.compare(password, user.data.hash || ""))) {
+		if (!(await bcrypt.compare(password, auth.password || ""))) {
 			throw FieldErrors({
 				password: {
 					message: req.t("auth:login.INVALID_PASSWORD"),

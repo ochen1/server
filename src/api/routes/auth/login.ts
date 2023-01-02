@@ -8,6 +8,7 @@ import {
 	adjustEmail,
 	FieldErrors,
 	LoginSchema,
+	UserAuth,
 } from "@fosscord/util";
 import crypto from "crypto";
 
@@ -45,17 +46,25 @@ router.post(
 			}
 		}
 
-		const user = await User.findOneOrFail({
-			where: [{ phone: login }, { email: email }],
-			select: [
-				"data",
-				"id",
-				"disabled",
-				"deleted",
-				"settings",
-				"totp_secret",
-				"mfa_enabled",
-			],
+		const auth = await UserAuth.findOneOrFail({
+			where: [{ user: { phone: login } }, { user: { email: email } }],
+			select: {
+				user: {
+					id: true,
+					disabled: true,
+					deleted: true,
+					mfa_enabled: true,
+				},
+				totp_last_ticket: true,
+				totp_secret: true,
+				password: true,
+				valid_tokens_since: true,
+			},
+			relations: {
+				user: {
+					settings: true,
+				}
+			}
 		}).catch((e) => {
 			throw FieldErrors({
 				login: {
@@ -64,6 +73,8 @@ router.post(
 				},
 			});
 		});
+
+		const user = auth.user;
 
 		if (undelete) {
 			// undelete refers to un'disable' here
@@ -87,7 +98,7 @@ router.post(
 		// the salt is saved in the password refer to bcrypt docs
 		const same_password = await bcrypt.compare(
 			password,
-			user.data.hash || "",
+			auth.password || "",
 		);
 		if (!same_password) {
 			throw FieldErrors({
@@ -102,7 +113,7 @@ router.post(
 			// TODO: This is not a discord.com ticket. I'm not sure what it is but I'm lazy
 			const ticket = crypto.randomBytes(40).toString("hex");
 
-			await User.update({ id: user.id }, { totp_last_ticket: ticket });
+			await UserAuth.update({ index: auth.index }, { totp_last_ticket: ticket });
 
 			return res.json({
 				ticket: ticket,

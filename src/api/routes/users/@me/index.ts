@@ -10,6 +10,7 @@ import {
 	Config,
 	UserModifySchema,
 	generateToken,
+	UserAuth,
 } from "@fosscord/util";
 import { route } from "@fosscord/api";
 import bcrypt from "bcrypt";
@@ -33,7 +34,7 @@ router.patch(
 
 		const user = await User.findOneOrFail({
 			where: { id: req.user_id },
-			select: [...PrivateUserProjection, "data"],
+			select: PrivateUserProjection,
 		});
 
 		// Populated on password change
@@ -51,12 +52,10 @@ router.patch(
 			);
 
 		if (body.password) {
-			if (user.data?.hash) {
-				const same_password = await bcrypt.compare(
-					body.password,
-					user.data.hash || "",
-				);
-				if (!same_password) {
+			const auth = await UserAuth.findOneOrFail({ where: { user: { id: req.user_id } } });
+
+			if (auth.password) {
+				if (!await bcrypt.compare(body.password, auth.password || "")) {
 					throw FieldErrors({
 						password: {
 							message: req.t("auth:login.INVALID_PASSWORD"),
@@ -64,8 +63,6 @@ router.patch(
 						},
 					});
 				}
-			} else {
-				user.data.hash = await bcrypt.hash(body.password, 12);
 			}
 		}
 
@@ -96,8 +93,12 @@ router.patch(
 					},
 				});
 			}
-			user.data.hash = await bcrypt.hash(body.new_password, 12);
-			user.data.valid_tokens_since = new Date();
+
+			await UserAuth.update({ user: { id: req.user_id} }, {
+				password: await bcrypt.hash(body.new_password, 12),
+				valid_tokens_since: new Date(),
+			})
+
 			newToken = await generateToken(user.id) as string;
 		}
 
