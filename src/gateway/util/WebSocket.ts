@@ -40,5 +40,9 @@ export interface WebSocket extends WS {
 	events: Record<string, undefined | (() => unknown)>;
 	member_events: Record<string, () => unknown>;
 	listen_options: ListenEventOpts;
-	// client?: Client;
+
+	// ID of current channel being viewed, determined by lazy request
+	current_channel?: string;
+
+	// client?: Client;	// webrtc voice client
 }

@@ -196,6 +196,8 @@ export async function onLazyRequest(this: WebSocket, { d }: Payload) {
 	const channel_id = Object.keys(channels || {}).first();
 	if (!channel_id) return;
 
+	this.current_channel = channel_id;
+
 	const permissions = await getPermission(this.user_id, guild_id, channel_id);
 	permissions.hasThrow("VIEW_CHANNEL");
 

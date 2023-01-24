@@ -241,6 +241,12 @@ async function consume(this: WebSocket, opts: EventOpts) {
 		case "TYPING_START":
 			// only gets send if the user is alowed to view the current channel
 			if (!permission.has("VIEW_CHANNEL")) return;
+
+			// lazy channels
+			if (data.channel_id && this.current_channel) {
+				// If we're not viewing the current channel, don't send message create for it
+				if (data.channel_id != this.current_channel) return;
+			}
 			break;
 		case "GUILD_CREATE":
 		case "GUILD_DELETE":
