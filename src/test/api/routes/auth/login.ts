@@ -1,13 +1,13 @@
 import { LoginSchema, User } from "@fosscord/util";
-import LoginRoute from "../../../../api/routes/auth/login";
-import { setupApiTest } from "../../../helpers";
+import LoginRoute from "@fosscord/api/routes/auth/login";
+import { setupApiTest } from "@fosscord/test";
 import supertest from "supertest";
 import test from "ava";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const app = setupApiTest(test);
-app.use(LoginRoute);
+app.use("/auth/login", LoginRoute);
 
 test.before("Create test user", async () => {
 	await User.register({
@@ -19,7 +19,7 @@ test.before("Create test user", async () => {
 
 test.serial("Can login using email", async (t) => {
 	const res = await supertest(app)
-		.post("/")
+		.post("/auth/login")
 		.send({
 			login: "logintest@test.com",
 			password: "logintest",

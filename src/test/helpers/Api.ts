@@ -1,7 +1,7 @@
 // eslint-disable-next-line ava/use-test
 import { TestFn } from "ava";
 import { Config } from "@fosscord/util";
-import { BodyParser } from "@fosscord/api";
+import { Authentication, BodyParser } from "@fosscord/api";
 import express from "express";
 import { suppressConsole } from "./Console";
 import {
@@ -13,6 +13,7 @@ import {
 export const setupApiTest = (test: TestFn<any>) => {
 	const app = express();
 	app.use(BodyParser({ inflate: true, limit: "10mb" }));
+	app.use(Authentication);
 
 	test.serial.before("Setup", async () => {
 		suppressConsole();

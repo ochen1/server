@@ -1,6 +1,6 @@
 import { RegisterSchema, User } from "@fosscord/util";
-import RegisterRoute from "../../../../api/routes/auth/register";
-import { setupApiTest } from "../../../helpers";
+import RegisterRoute from "@fosscord/api/routes/auth/register";
+import { setupApiTest } from "@fosscord/test";
 import supertest from "supertest";
 import jsonwebtoken from "jsonwebtoken";
 
@@ -8,11 +8,11 @@ import anyTest, { TestFn } from "ava";
 const test = anyTest as TestFn<{ userId: string }>;
 
 const app = setupApiTest(test);
-app.use(RegisterRoute);
+app.use("/auth/register", RegisterRoute);
 
 test.serial("Returns valid token", async (t) => {
 	const res = await supertest(app)
-		.post("/")
+		.post("/auth/register")
 		.send({
 			username: "test",
 			password: "test",

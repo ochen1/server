@@ -116,6 +116,7 @@
 	},
 	"_moduleAliases": {
 		"@fosscord/api": "dist/api",
+		"@fosscord/api/routes*": "dist/api/routes/*",
 		"@fosscord/cdn": "dist/cdn",
 		"@fosscord/gateway": "dist/gateway",
 		"@fosscord/util": "dist/util",
@@ -133,7 +134,8 @@
 		],
 		"files": [
 			"src/test/**/*",
-			"!src/test/helpers/**/*"
+			"!src/test/helpers/**/*",
+			"!src/test/index.ts"
 		]
 	}
 }
