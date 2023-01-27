@@ -1,7 +1,7 @@
 {
-	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:ava/recommended"],
 	"parser": "@typescript-eslint/parser",
-	"plugins": ["@typescript-eslint"],
+	"plugins": ["@typescript-eslint", "ava"],
 	"root": true,
 	"rules": {
 		"no-mixed-spaces-and-tabs": "off",

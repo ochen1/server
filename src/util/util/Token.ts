@@ -72,7 +72,7 @@ export function checkToken(
 	});
 }
 
-export async function generateToken(id: string) {
+export async function generateToken(id: string): Promise<string> {
 	const iat = Math.floor(Date.now() / 1000);
 	const algorithm = "HS256";
 
@@ -85,7 +85,7 @@ export async function generateToken(id: string) {
 			},
 			(err, token) => {
 				if (err) return rej(err);
-				return res(token);
+				return res(token as string);
 			},
 		);
 	});
