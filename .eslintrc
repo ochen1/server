@@ -1,11 +1,16 @@
 {
-	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:ava/recommended"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:ava/recommended"
+	],
 	"parser": "@typescript-eslint/parser",
 	"plugins": ["@typescript-eslint", "ava"],
 	"root": true,
 	"rules": {
 		"no-mixed-spaces-and-tabs": "off",
 		"@typescript-eslint/no-inferrable-types": "off", // Required by typeorm
-		"@typescript-eslint/no-var-requires": "off" // Sometimes requred by typeorm to resolve circular deps
+		"@typescript-eslint/no-var-requires": "off", // Sometimes requred by typeorm to resolve circular deps
+		"ava/no-import-test-files": "off" // Off due to a bug in the rule https://github.com/avajs/eslint-plugin-ava/issues/311
 	}
 }

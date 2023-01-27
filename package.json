@@ -131,7 +131,7 @@
 		],
 		"files": [
 			"src/test/**/*",
-			"src/api/routes/**/*"
+			"!src/test/helpers/**/*"
 		]
 	}
 }

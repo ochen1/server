@@ -19,13 +19,7 @@
 import "missing-native-js-functions";
 import dotenv from "dotenv";
 dotenv.config();
-import {
-	closeDatabase,
-	Config,
-	initDatabase,
-	initEvent,
-	Sentry,
-} from "@fosscord/util";
+import { Config, initDatabase, initEvent, Sentry } from "@fosscord/util";
 import ws from "ws";
 import { Connection } from "./events/Connection";
 import http from "http";
@@ -81,12 +75,13 @@ export class Server {
 		}
 	}
 
-	async stop() {
-		this.ws.clients.forEach((x) => x.close());
-		this.ws.close(() => {
-			this.server.close(() => {
-				closeDatabase();
+	stop = (): Promise<void> =>
+		new Promise((resolve) => {
+			this.ws.clients.forEach((x) => x.close());
+			this.ws.close(() => {
+				this.server.close(async () => {
+					resolve();
+				});
 			});
 		});
-	}
 }

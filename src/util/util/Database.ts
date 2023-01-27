@@ -119,5 +119,5 @@ export async function initDatabase(): Promise<DataSource> {
 export { dbConnection, DataSourceOptions, DatabaseType };
 
 export async function closeDatabase() {
-	await dbConnection?.destroy();
+	if (dbConnection?.isInitialized) await dbConnection?.destroy();
 }
