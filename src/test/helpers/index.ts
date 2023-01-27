@@ -21,3 +21,5 @@ export * from "./Socket";
 export * from "./Database";
 export * from "./User";
 export * from "./Api";
+export * from "./testClient";
+export * from "./puppeteer";

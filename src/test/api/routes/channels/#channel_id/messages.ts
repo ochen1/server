@@ -16,7 +16,13 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { Channel, Guild, Member, MessageCreateSchema } from "@fosscord/util";
+import {
+	Channel,
+	Guild,
+	Member,
+	Message,
+	MessageCreateSchema,
+} from "@fosscord/util";
 import { setupApiTest, createTestUser } from "@fosscord/test";
 import MessagesRoute from "@fosscord/api/routes/channels/#channel_id/messages";
 import supertest from "supertest";
@@ -54,10 +60,33 @@ test.serial("Send plain text message", async (t) => {
 	t.is(res.status, 200, res.text);
 
 	// TODO: check if MESSAGE_CREATE is emitted
+
+	await Message.findOneOrFail({ where: { id: res.body.id } });
+});
+
+test.serial("Send embed", async (t) => {
+	const res = await supertest(app)
+		.post(`/${t.context.channel.id}/messages`)
+		.auth(t.context.userToken, { type: "bearer" })
+		.send({
+			embeds: [
+				{
+					title: "this is a test",
+					description: "!!!",
+				},
+			],
+		} as MessageCreateSchema);
+
+	t.is(res.status, 200, res.text);
+	t.like(res.body.embeds[0], {
+		title: "this is a test",
+		description: "!!!",
+	});
+
+	await Message.findOneOrFail({ where: { id: res.body.id } });
 });
 
 test.todo("Send attachment");
-test.todo("Send embed");
 test.todo("Send url");
 test.todo("Send role ping");
 

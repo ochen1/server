@@ -16,17 +16,21 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { generateToken, User } from "@fosscord/util";
-import bcrypt from "bcrypt";
+// eslint-disable-next-line ava/use-test
+import { ExecutionContext } from "ava";
+import puppeteer, { Page } from "puppeteer";
 
-export const createTestUser = async () => {
-	const user = await User.register({
-		username: `test${Math.floor(Math.random() * 100)}`,
-		password: await bcrypt.hash("test", 12),
-		email: `test${Math.floor(Math.random() * 100)}@test.com`,
-	});
-
-	const token = await generateToken(user.id);
-
-	return { user: user, token: token };
+// Thanks, https://github.com/avajs/ava/blob/main/docs/recipes/puppeteer.md#setup
+export const withPage = async (
+	t: ExecutionContext,
+	run: (t: ExecutionContext, page: Page) => unknown,
+) => {
+	const browser = await puppeteer.launch({ headless: true });
+	const page = await browser.newPage();
+	try {
+		return await run(t, page);
+	} finally {
+		await page.close();
+		await browser.close();
+	}
 };

@@ -21,6 +21,7 @@ import fs from "fs/promises";
 import { existsSync } from "fs";
 import { ConfigValue } from "../config";
 import { OrmUtils } from "..";
+import { DeepPartial } from "typeorm";
 
 // TODO: yaml instead of json
 const overridePath = process.env.CONFIG_PATH ?? "";
@@ -68,9 +69,9 @@ export const Config = {
 
 		return config;
 	},
-	set: function set(val: Partial<ConfigValue>) {
+	set: function set(val: DeepPartial<ConfigValue>) {
 		if (!config || !val) return;
-		config = val.merge(config);
+		config = OrmUtils.mergeDeep({}, { ...config }, val);
 
 		return applyConfig(config);
 	},
