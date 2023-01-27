@@ -5,12 +5,14 @@ import {
 	createTestDatabaseConnection,
 	createTestUser,
 	sendPayload,
+	suppressConsole,
 } from "../helpers";
 
 import anyTest, { TestFn } from "ava";
 const test = anyTest as TestFn<{ gateway: GatewayServer }>;
 
-test.before("Start the gateway server", async (t) => {
+test.before("Setup", async (t) => {
+	suppressConsole();
 	await createTestDatabaseConnection();
 	const gateway = new GatewayServer({ port: 8080 });
 	await gateway.start();
@@ -19,7 +21,7 @@ test.before("Start the gateway server", async (t) => {
 });
 
 test.after(
-	"Stop the gateway",
+	"Teardown",
 	(t) =>
 		new Promise((resolve) => {
 			// settimout because sqlite will crash otherwise
