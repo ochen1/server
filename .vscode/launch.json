@@ -28,7 +28,8 @@
 			"outputCapture": "std",
 			"skipFiles": [
 			  "<node_internals>/**/*.js"
-			]
+			],
+			"preLaunchTask": "tsc: build - tsconfig.json"
 		  }
 	]
 }
