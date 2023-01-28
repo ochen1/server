@@ -39,7 +39,7 @@ export const setupBundleServer = (test: TestFn<any>) => {
 	const cdn = new CDNServer({ app, server });
 	const gateway = new GatewayServer({ server, port: 8081 });
 	test.serial.before("Setup bundle server", async () => {
-		suppressConsole();
+		// suppressConsole();
 		await createTestDatabaseConnection();
 		await Config.init();
 		await Config.set({ client: { useTestClient: true } });
@@ -47,16 +47,17 @@ export const setupBundleServer = (test: TestFn<any>) => {
 		await Promise.all([api.start(), cdn.start(), gateway.start()]);
 	});
 
-	test.after("Teardown", async (t) => {
+	test.after("Teardown", async () => {
+		console.log("1");
+		server.close();
+		console.log("2");
+		await Promise.all([api.stop(), cdn.stop(), gateway.stop()]);
+		console.log("3");
 		try {
-			server.close();
-			await Promise.all([api.stop(), cdn.stop(), gateway.stop()]);
 			await closeTestDatabaseConnection();
-
-			// settimeout because sqlite crashes
-			await new Promise((resolve) => setTimeout(resolve, 100));
 		} catch (e) {
-			t.log(e);
+			console.error(e);
 		}
+		console.log("4");
 	});
 };

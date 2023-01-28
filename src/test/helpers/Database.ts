@@ -31,6 +31,4 @@ export const createTestDatabaseConnection = async () => {
 	return await initDatabase();
 };
 
-export const closeTestDatabaseConnection = async () => {
-	await closeDatabase();
-};
+export const closeTestDatabaseConnection = () => closeDatabase();
