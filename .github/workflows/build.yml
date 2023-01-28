@@ -18,13 +18,28 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npx eslint .
-    - run: npx prettier --check .
-    - run: npm run build --if-present
-    - run: npm run test --if-present
+
+    - name: Install Chrome for tests
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: 1083080 # See https://github.com/puppeteer/puppeteer/blob/main/packages/puppeteer-core/src/revisions.ts
+
+    - name: Install deps
+      run: npm ci
+    
+    - name: Code quality
+      run: |
+          npx eslint .
+          npx prettier --check .
+      
+    - name: Build
+      run: npm run build --if-present
+
+    - name: Test
+      run: CHROMIUM_PATH=$(which chrome) npm run test --if-present

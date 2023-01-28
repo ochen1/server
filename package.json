@@ -65,7 +65,7 @@
 		"express": "^4.18.1",
 		"husky": "^8.0.0",
 		"prettier": "^2.7.1",
-		"puppeteer": "^19.6.1",
+		"puppeteer-core": "^19.6.2",
 		"supertest": "^6.3.3",
 		"typescript": "^4.9.4"
 	},
@@ -130,7 +130,8 @@
 			"compile": false
 		},
 		"require": [
-			"module-alias/register"
+			"module-alias/register",
+			"dotenv/config"
 		],
 		"files": [
 			"src/test/**/*",

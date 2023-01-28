@@ -18,14 +18,17 @@
 
 // eslint-disable-next-line ava/use-test
 import { ExecutionContext } from "ava";
-import puppeteer, { Page } from "puppeteer";
+import puppeteer, { Page } from "puppeteer-core";
 
 // Thanks, https://github.com/avajs/ava/blob/main/docs/recipes/puppeteer.md#setup
 export const withPage = async (
 	t: ExecutionContext,
 	run: (t: ExecutionContext, page: Page) => unknown,
 ) => {
-	const browser = await puppeteer.launch({ headless: true });
+	const browser = await puppeteer.launch({
+		headless: true,
+		executablePath: process.env.CHROMIUM_PATH,
+	});
 	const page = await browser.newPage();
 	try {
 		return await run(t, page);
