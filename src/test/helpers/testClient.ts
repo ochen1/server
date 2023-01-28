@@ -48,8 +48,8 @@ export const setupBundleServer = (test: TestFn<any>) => {
 	});
 
 	test.after("Teardown", async () => {
-		await closeTestDatabaseConnection();
 		await Promise.all([api.stop(), cdn.stop(), gateway.stop()]);
+		await closeTestDatabaseConnection();
 		server.close();
 	});
 };
