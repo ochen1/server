@@ -51,5 +51,8 @@ export const setupBundleServer = (test: TestFn<any>) => {
 		await Promise.all([api.stop(), cdn.stop(), gateway.stop()]);
 		await closeTestDatabaseConnection();
 		server.close();
+
+		// settimeout because sqlite crashes
+		await new Promise((resolve) => setTimeout(resolve, 100));
 	});
 };
