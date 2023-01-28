@@ -39,7 +39,7 @@ export const setupBundleServer = (test: TestFn<any>) => {
 	const cdn = new CDNServer({ app, server });
 	const gateway = new GatewayServer({ server, port: 8081 });
 	test.serial.before("Setup bundle server", async () => {
-		// suppressConsole();
+		suppressConsole();
 		await createTestDatabaseConnection();
 		await Config.init();
 		await Config.set({ client: { useTestClient: true } });
@@ -48,16 +48,11 @@ export const setupBundleServer = (test: TestFn<any>) => {
 	});
 
 	test.after("Teardown", async () => {
-		console.log("1");
 		server.close();
-		console.log("2");
 		await Promise.all([api.stop(), cdn.stop(), gateway.stop()]);
-		console.log("3");
-		try {
-			await closeTestDatabaseConnection();
-		} catch (e) {
-			console.error(e);
-		}
-		console.log("4");
+		await new Promise((resolve) => {
+			// wait for gateway close handlers to finish
+			setTimeout(() => closeTestDatabaseConnection().then(resolve), 200);
+		});
 	});
 };

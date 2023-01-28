@@ -19,6 +19,7 @@
 import { Payload, Server as GatewayServer } from "@fosscord/gateway";
 import { ReadyEventData } from "@fosscord/util";
 import {
+	closeTestDatabaseConnection,
 	createSocketAndConnect,
 	createTestDatabaseConnection,
 	createTestUser,
@@ -38,14 +39,15 @@ test.before("Setup", async (t) => {
 	t.context.gateway = gateway;
 });
 
-test.after(
-	"Teardown",
-	(t) =>
-		new Promise((resolve) => {
-			// settimout because sqlite will crash otherwise
-			t.context.gateway.stop().then(() => setTimeout(resolve, 100));
-		}),
-);
+test.after("Teardown", async (t) => {
+	await t.context.gateway.stop();
+	await new Promise(
+		(resolve) =>
+			setTimeout(() => {
+				closeTestDatabaseConnection().then(resolve);
+			}, 200), // wait for the close handlers to finish
+	);
+});
 
 test("Identify", async (t) => {
 	const { user, token } = await createTestUser();
