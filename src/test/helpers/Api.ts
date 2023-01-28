@@ -39,7 +39,7 @@ export const setupApiTest = (test: TestFn<any>) => {
 		await Config.init();
 	});
 
-	test.after("Teardown", async () => {
+	test.after.always("Teardown", async () => {
 		await closeTestDatabaseConnection();
 	});
 

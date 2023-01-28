@@ -47,7 +47,7 @@ export const setupBundleServer = (test: TestFn<any>) => {
 		await Promise.all([api.start(), cdn.start(), gateway.start()]);
 	});
 
-	test.after("Teardown", async () => {
+	test.after.always("Teardown", async () => {
 		server.close();
 		await Promise.all([api.stop(), cdn.stop(), gateway.stop()]);
 		await new Promise((resolve) => {

@@ -39,7 +39,7 @@ test.before("Setup", async (t) => {
 	t.context.gateway = gateway;
 });
 
-test.after("Teardown", async (t) => {
+test.after.always("Teardown", async (t) => {
 	await t.context.gateway.stop();
 	await new Promise(
 		(resolve) =>
