@@ -107,24 +107,26 @@ test.serial("Login and load client", withPage, async (t, page) => {
 
 // eslint-disable-next-line ava/no-only-test
 test.serial("Can create guild", withTestClient, async (t, page) => {
-	const addAGuild = await page.$("div[aria-label='Add a Guild']");
-	await page.waitForNetworkIdle();
+	const addAGuild = await page.$(
+		"div[data-list-item-id='guildsnav___create-join-button']",
+	);
 	addAGuild?.click();
+	await page.waitForNetworkIdle();
 
 	const createMyOwnX = "//button[contains(., 'Create My Own')]";
 	const createMyOwnButton = await page.waitForXPath(createMyOwnX);
-	await page.waitForNetworkIdle();
 	await createMyOwnButton?.click();
+	await page.waitForNetworkIdle();
 
 	const skipThisQuestionX = "//button[contains(., 'For me and my friends')]";
 	const skipThisQuestionButton = await page.waitForXPath(skipThisQuestionX);
-	await page.waitForNetworkIdle();
 	await skipThisQuestionButton?.click();
+	await page.waitForNetworkIdle();
 
 	const createX = "//button[contains(., 'Create')]";
 	const createButton = await page.waitForXPath(createX);
-	await page.waitForNetworkIdle();
 	await createButton?.click();
+	await page.waitForNetworkIdle();
 
 	await page.waitForSelector("div[role='textbox']");
 
