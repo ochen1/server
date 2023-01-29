@@ -28,6 +28,7 @@ import {
 	withPage,
 	withTestClient,
 } from "@fosscord/test";
+import { Channel, Guild, Member, Message } from "@fosscord/util";
 
 setupBundleServer(test);
 
@@ -48,7 +49,7 @@ declare namespace window {
 	export const req: any;
 }
 
-test.serial("Login and load client", withPage, async (t, page) => {
+test("Login and load client", withPage, async (t, page) => {
 	const { user } = await createTestUser();
 
 	await page.goto("http://localhost:8081/login", {
@@ -105,8 +106,7 @@ test.serial("Login and load client", withPage, async (t, page) => {
 	t.pass();
 });
 
-// eslint-disable-next-line ava/no-only-test
-test.serial("Can create guild", withTestClient, async (t, page) => {
+test("Can create guild", withTestClient, async (t, page) => {
 	const addAGuild = await page.$(
 		"div[data-list-item-id='guildsnav___create-join-button']",
 	);
@@ -129,6 +129,33 @@ test.serial("Can create guild", withTestClient, async (t, page) => {
 	await page.waitForNetworkIdle();
 
 	await page.waitForSelector("div[role='textbox']");
+
+	t.pass();
+});
+
+test("Can send messages", withTestClient, async (t, page, user) => {
+	const guild = await Guild.createGuild({ name: "test", owner_id: user.id });
+	const channel = await Channel.createChannel({
+		name: "test",
+		guild: guild,
+		type: 0,
+		created_at: new Date(),
+	});
+	await Member.addToGuild(user.id, guild.id);
+
+	page.goto(`http://localhost:8081/channels/${guild.id}/${channel.id}`);
+	await waitForTestClientLoad(page);
+
+	await page.type("div[role='textbox']", "this is a test message");
+	await page.keyboard.press("Enter");
+	await page.waitForNetworkIdle();
+
+	await Message.findOneOrFail({
+		where: {
+			channel: { id: channel.id },
+			content: "this is a test message",
+		},
+	});
 
 	t.pass();
 });
