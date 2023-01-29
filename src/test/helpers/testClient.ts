@@ -79,8 +79,8 @@ export const withTestClient = async (
 			waitUntil: "networkidle0",
 		});
 		await page.evaluate(`localStorage.setItem('token', '"${token}"');`);
-		await page.setRequestInterception(false);
 		page.removeAllListeners();
+		await page.setRequestInterception(false);
 		await page.reload();
 
 		await waitForTestClientLoad(page);
