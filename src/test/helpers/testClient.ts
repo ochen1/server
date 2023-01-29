@@ -17,11 +17,11 @@
 */
 
 // eslint-disable-next-line ava/use-test
-import { TestFn } from "ava";
+import { ExecutionContext, TestFn } from "ava";
 import { FosscordServer as ApiServer } from "@fosscord/api";
 import { Server as GatewayServer } from "@fosscord/gateway";
 import { CDNServer } from "@fosscord/cdn";
-import { Config } from "@fosscord/util";
+import { Config, User } from "@fosscord/util";
 import express from "express";
 import http from "http";
 import { suppressConsole } from "./Console";
@@ -29,6 +29,9 @@ import {
 	closeTestDatabaseConnection,
 	createTestDatabaseConnection,
 } from "./Database";
+import { withPage } from "./puppeteer";
+import { Page } from "puppeteer-core";
+import { createTestUser } from "./User";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const setupBundleServer = (test: TestFn<any>) => {
@@ -54,5 +57,41 @@ export const setupBundleServer = (test: TestFn<any>) => {
 			// wait for gateway close handlers to finish
 			setTimeout(() => closeTestDatabaseConnection().then(resolve), 200);
 		});
+	});
+};
+
+export const withTestClient = async (
+	t: ExecutionContext,
+	run: (t: ExecutionContext, page: Page, user: User) => unknown,
+) => {
+	return await withPage(t, async (t, page) => {
+		// Set token in local storage to log in
+		const { user, token } = await createTestUser();
+		await page.setRequestInterception(true);
+		page.on("request", (request) =>
+			request.respond({
+				status: 200,
+				contentType: "text/plain",
+				body: "blah",
+			}),
+		);
+		await page.goto("http://localhost:8081/app", {
+			waitUntil: "networkidle0",
+		});
+		await page.evaluate(`localStorage.setItem('token', '"${token}"');`);
+		await page.setRequestInterception(false);
+		page.removeAllListeners();
+		await page.reload();
+
+		await waitForTestClientLoad(page);
+
+		return await run(t, page, user);
+	});
+};
+
+export const waitForTestClientLoad = async (page: Page) => {
+	await page.waitForNetworkIdle();
+	await page.waitForSelector("video[data-testid='app-spinner']", {
+		hidden: true,
 	});
 };

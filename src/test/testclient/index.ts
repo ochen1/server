@@ -21,7 +21,13 @@
 import test from "ava";
 import fs from "fs/promises";
 import path from "path";
-import { createTestUser, setupBundleServer, withPage } from "@fosscord/test";
+import {
+	createTestUser,
+	setupBundleServer,
+	waitForTestClientLoad,
+	withPage,
+	withTestClient,
+} from "@fosscord/test";
 
 setupBundleServer(test);
 
@@ -94,7 +100,40 @@ test.serial("Login and load client", withPage, async (t, page) => {
 			}),
 	);
 
-	await page.waitForNetworkIdle();
+	await waitForTestClientLoad(page);
+
+	t.pass();
+});
+
+// eslint-disable-next-line ava/no-only-test
+test.serial("Can create guild", withTestClient, async (t, page) => {
+	const addAGuild = await page.$("div[aria-label='Add a Guild']");
+	addAGuild?.click();
+
+	// why on earth do I need the delays
+	// when I'm waiting for the xpath to be visible?
+	await new Promise((resolve) => setTimeout(resolve, 200));
+
+	const createMyOwnX = "//button[contains(., 'Create My Own')]";
+	await page.waitForXPath(createMyOwnX, { visible: true });
+	const [createMyOwnButton] = await page.$x(createMyOwnX);
+	await createMyOwnButton.click();
+
+	await new Promise((resolve) => setTimeout(resolve, 200));
+
+	const skipThisQuestionX = "//button[contains(., 'For me and my friends')]";
+	await page.waitForXPath(skipThisQuestionX, { visible: true });
+	const [skipThisQuestionButton] = await page.$x(skipThisQuestionX);
+	await skipThisQuestionButton.click();
+
+	await new Promise((resolve) => setTimeout(resolve, 200));
+
+	const createX = "//button[contains(., 'Create')]";
+	await page.waitForXPath(createX, { visible: true });
+	const [createButton] = await page.$x(createX);
+	await createButton.click();
+
+	await page.waitForSelector("div[role='textbox']");
 
 	t.pass();
 });
