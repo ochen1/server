@@ -308,11 +308,17 @@ export class Member extends BaseClassWithoutId {
 	}
 
 	static async addToGuild(user_id: string, guild_id: string) {
-		const user = await User.getPublicUser(user_id);
+		if (
+			await Member.count({
+				where: { id: user_id, guild: { id: guild_id } },
+			})
+		)
+			throw new HTTPError("You are already a member of this guild", 400);
+
 		const isBanned = await Ban.count({ where: { guild_id, user_id } });
-		if (isBanned) {
-			throw DiscordApiErrors.USER_BANNED;
-		}
+		if (isBanned > 0) throw DiscordApiErrors.USER_BANNED;
+
+		const user = await User.getPublicUser(user_id);
 		const { maxGuilds } = Config.get().limits.user;
 		const guild_count = await Member.count({ where: { id: user_id } });
 		if (guild_count >= maxGuilds) {
@@ -342,13 +348,6 @@ export class Member extends BaseClassWithoutId {
 			select: PublicMemberProjection,
 			take: 10,
 		});
-
-		if (
-			await Member.count({
-				where: { id: user.id, guild: { id: guild_id } },
-			})
-		)
-			throw new HTTPError("You are already a member of this guild", 400);
 
 		const member = {
 			id: user_id,
