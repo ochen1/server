@@ -333,6 +333,82 @@ export class Member extends BaseClassWithoutId {
 				id: guild_id,
 			},
 			relations: [...PublicGuildRelations, "system_channel"],
+			select: {
+				// TODO: Public guild projection
+				id: true,
+				name: true,
+				icon: true,
+				description: true,
+				// home_header: true,	// TODO
+				splash: true,
+				discovery_splash: true,
+				features: true,
+				// welcome_screen: true,	huh?
+				banner: true,
+				owner_id: true,
+				// application_id: true,	// TODO
+				region: true,
+				afk_channel_id: true,
+				afk_timeout: true,
+				system_channel_id: true,
+				widget_enabled: true,
+				widget_channel_id: true,
+				verification_level: true,
+				default_message_notifications: true,
+				mfa_level: true,
+				explicit_content_filter: true,
+				max_presences: true,
+				max_members: true,
+				// max_stage_channel_users: true,	// TODO
+				// vanity_url_code: true,	// TODO
+				premium_tier: true,
+				premium_subscription_count: true,
+				system_channel_flags: true,
+				preferred_locale: true,
+				rules_channel_id: true,
+				// safety_alerts_channel_id: true,	// TODO
+				public_updates_channel_id: true,
+				// hub_type: true,	// TODO
+				premium_progress_bar_enabled: true,
+				// latest_onboarding_question_id: true,	// TODO
+				nsfw: true,
+				nsfw_level: true,
+				emojis: {
+					// TODO: public emoji projection?
+					id: true,
+					name: true,
+					roles: true,
+					require_colons: true,
+					managed: true,
+					animated: true,
+					available: true,
+				},
+				stickers: {
+					id: true,
+					name: true,
+					tags: true,
+					type: true,
+					format_type: true,
+					description: true,
+					// asset: true,	// TODO
+					available: true,
+					guild_id: true,
+				},
+				roles: {
+					id: true,
+					name: true,
+					// description: true,	// TODO
+					permissions: true,
+					position: true,
+					color: true,
+					hoist: true,
+					managed: true,
+					mentionable: true,
+					icon: true,
+					unicode_emoji: true,
+					// flags: true,	// TODO
+				},
+			},
 		});
 
 		const memberCount = await Member.count({ where: { guild_id } });
