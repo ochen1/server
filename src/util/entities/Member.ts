@@ -332,7 +332,7 @@ export class Member extends BaseClassWithoutId {
 			where: {
 				id: guild_id,
 			},
-			relations: [...PublicGuildRelations, "system_channel"],
+			relations: ["roles", "stickers", "emojis"],
 			select: {
 				// TODO: Public guild projection
 				id: true,
