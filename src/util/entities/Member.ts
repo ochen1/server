@@ -421,7 +421,7 @@ export class Member extends BaseClassWithoutId {
 					},
 				},
 			},
-			select: PublicMemberProjection,
+			select: [...PublicMemberProjection, "index"],
 			take: 10,
 		});
 
