@@ -339,6 +339,7 @@ export class Member extends BaseClassWithoutId {
 					},
 				},
 			},
+			select: PublicMemberProjection,
 			take: 10,
 		});
 
