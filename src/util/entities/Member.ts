@@ -381,7 +381,6 @@ export class Member extends BaseClassWithoutId {
 					suppress_roles: false,
 					version: 0,
 				},
-				// Member.save is needed because else the roles relations wouldn't be updated
 			}).save(),
 			Guild.increment({ id: guild_id }, "member_count", 1),
 			emitEvent({
