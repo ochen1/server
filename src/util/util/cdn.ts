@@ -46,7 +46,9 @@ export async function uploadFile(
 			body: form,
 		},
 	);
-	const result = (await response.json()) as Attachment;
+	const tmp = await response.json();
+	tmp.url = tmp.proxy_url;
+	const result = (tmp) as Attachment;
 
 	if (response.status !== 200) throw result;
 	return result;
