@@ -27,6 +27,7 @@ import {
 	handleFile,
 	Member,
 	MemberChangeSchema,
+	Permissions,
 	PublicMemberProjection,
 	PublicUserProjection,
 	Role,
@@ -74,10 +75,13 @@ router.get(
 			},
 		});
 
+		const permission = await getPermission(member_id, guild_id);
+
 		return res.json({
 			...member.toPublicMember(),
 			user: member.user.toPublicUser(),
 			roles: member.roles.map((x) => x.id),
+			permissions: Permissions.resolve(permission).toString()
 		});
 	},
 );
